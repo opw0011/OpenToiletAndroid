@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "658392514610",
+    "firebase_url": "https://opentoilet-43ab1.firebaseio.com",
+    "project_id": "opentoilet-43ab1",
+    "storage_bucket": "opentoilet-43ab1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658392514610:android:5df3fb383eac0b63",
+        "android_client_info": {
+          "package_name": "hk.ust.cse.comp4521.group20.opentoilet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658392514610-g34drf3klnb3sim0dku7k445rlomkoh3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hk.ust.cse.comp4521.group20.opentoilet",
+            "certificate_hash": "f9607d2a3a0aecdd725de5212896843e03e03325"
+          }
+        },
+        {
+          "client_id": "658392514610-n8g61tkg1b0p8l6gp384dmdks1fluslr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6li-sAKTW6LSikIVRND0iBDn9rsq42og"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658392514610-n8g61tkg1b0p8l6gp384dmdks1fluslr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658392514610:android:04b468bfd61375ca",
+        "android_client_info": {
+          "package_name": "hk.ust.cse.comp4521.group20.opentoiletandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658392514610-lvono4huh9v419b76a3caflfs1aplr18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hk.ust.cse.comp4521.group20.opentoiletandroid",
+            "certificate_hash": "fd116279895929716e946425b80a5aa6aa652ebf"
+          }
+        },
+        {
+          "client_id": "658392514610-n8g61tkg1b0p8l6gp384dmdks1fluslr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6li-sAKTW6LSikIVRND0iBDn9rsq42og"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658392514610-n8g61tkg1b0p8l6gp384dmdks1fluslr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
