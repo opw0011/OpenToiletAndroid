@@ -1,12 +1,14 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,15 +50,24 @@ public class ToiletListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_toilet_list, container, false);
 
-        ListView listView = (ListView) view.findViewById(R.id.lvToilet);
+        final ListView listView = (ListView) view.findViewById(R.id.lvToilet);
 
         // List view adapter
         CustomAdapter customAdapter = new CustomAdapter();
         listView.setAdapter(customAdapter);
 
+        // List view item onClick listener
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ToiletDetailActivity.class);
+                // TODO: put the selected toilet data in the intent
+                intent.putExtra("ToiletName", toiletsDummyData[position].getName());
+                startActivity(intent);
+            }
+        });
+
         return view;
-
-
     }
 
     // Adapter to connect data to the list view
