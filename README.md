@@ -1,4 +1,6 @@
-# OpenToilet
+# OpenToilet 
+
+[![Build Status](https://travis-ci.com/opw0011/OpenToiletAndroid.svg?token=n3gZkhLZiDrY7X7nu999&branch=master)](https://travis-ci.com/opw0011/OpenToiletAndroid)
 
 ## To-Do List
 **UI Design**
