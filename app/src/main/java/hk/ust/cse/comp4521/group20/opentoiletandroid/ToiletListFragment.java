@@ -4,6 +4,8 @@ package hk.ust.cse.comp4521.group20.opentoiletandroid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
 
@@ -23,20 +30,9 @@ public class ToiletListFragment extends Fragment {
 
     public static final String TAG = "ToiletListFragment";
 
-    private static final Toilet[] toiletsDummyData = {
-            new Toilet("4/F Male Toilet Near Lift 19", 19, Toilet.Gender.Male, 4.9, 9, 2, true, false, true),
-            new Toilet("4/F Female Toilet Near Lift 19", 19, Toilet.Gender.Female, 4.2, 4, 2, true, false, true),
-            new Toilet("3/F Male Toilet Near Lift 19", 19, Toilet.Gender.Male, 4.2, 9, 2, false, false, false),
-            new Toilet("3/F Female Toilet Near Lift 19", 19, Toilet.Gender.Female, 4.0, 0, 0, false, false, false),
-            new Toilet("2/F Male Toilet Near Lift 19", 19, Toilet.Gender.Male, 2.2, 9, 2, false, false, false),
-            new Toilet("2/F Female Toilet Near Lift 19", 19, Toilet.Gender.Female, 1.0, 4, 2, false, false, false),
-            new Toilet("4/F Male Toilet Near Lift 19", 19, Toilet.Gender.Male, 4.9, 9, 2, true, false, true),
-            new Toilet("4/F Female Toilet Near Lift 19", 19, Toilet.Gender.Female, 4.2, 4, 2, true, false, true),
-            new Toilet("3/F Male Toilet Near Lift 19", 19, Toilet.Gender.Male, 4.2, 9, 2, false, false, false),
-            new Toilet("3/F Female Toilet Near Lift 19", 19, Toilet.Gender.Female, 4.0, 0, 0, false, false, false),
-            new Toilet("2/F Male Toilet Near Lift 19", 19, Toilet.Gender.Male, 2.2, 9, 2, false, false, false),
-            new Toilet("2/F Female Toilet Near Lift 19", 19, Toilet.Gender.Female, 1.0, 4, 2, false, false, false),
-    };
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public ToiletListFragment() {
         // Required empty public constructor
@@ -50,53 +46,30 @@ public class ToiletListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_toilet_list, container, false);
 
-        final ListView listView = (ListView) view.findViewById(R.id.lvToilet);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.lvToilet);
 
-        // List view adapter
-        CustomAdapter customAdapter = new CustomAdapter();
-        listView.setAdapter(customAdapter);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
 
-        // List view item onClick listener
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items");
+        mAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, mRef) {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ToiletDetailActivity.class);
-                // TODO: put the selected toilet data in the intent
-                intent.putExtra("ToiletName", toiletsDummyData[position].getName());
-                startActivity(intent);
+            protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {
+                toiletViewHolder.setName(toilet.getName());
+                toiletViewHolder.setText(toilet.getGender().toString());
             }
-        });
+        };
+        mRecyclerView.setAdapter(mAdapter);
+
 
         return view;
     }
 
-    // Adapter to connect data to the list view
-    private class CustomAdapter extends BaseAdapter {
-        @Override
-        public int getCount() {
-            return toiletsDummyData.length;
-        }
 
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = getActivity().getLayoutInflater().inflate(R.layout.toilet_list_item, null);
-            TextView textViewName = (TextView) convertView.findViewById(R.id.tvName);
-            TextView textViewDescription = (TextView) convertView.findViewById(R.id.tvDescription);
-            Toilet toilet = toiletsDummyData[position];
-            textViewName.setText(toilet.getName());
-            textViewDescription.setText(String.format("lift:%s, like:%d, dislike:%d", toilet.getLift(), toilet.getLike(), toilet.getDislike()));
-            return convertView;
-        }
-    }
 
 }
