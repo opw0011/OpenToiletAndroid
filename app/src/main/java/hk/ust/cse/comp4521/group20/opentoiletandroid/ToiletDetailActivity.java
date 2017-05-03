@@ -27,7 +27,7 @@ public class ToiletDetailActivity extends AppCompatActivity {
 
     WebView webView;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private FirebaseRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     FloatingActionButton fab;
     FloatingActionButton fabWriteReview;
@@ -58,6 +58,27 @@ public class ToiletDetailActivity extends AppCompatActivity {
             toiletId = bundle.getString("ToiletId");
         }
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.reviewList);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("review_items/"+toiletId);
+        mAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.review_list_item, ReviewViewHolder.class, mRef) {
+            @Override
+            protected void populateViewHolder(ReviewViewHolder reviewViewHolder, Review review, int position) {
+                reviewViewHolder.setTitle(review.getTitle());
+                reviewViewHolder.setDesc(review.getContent());
+                reviewViewHolder.setRating(review.getScore());
+            }
+        };
+        mRecyclerView.setAdapter(mAdapter);
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,14 +91,17 @@ public class ToiletDetailActivity extends AppCompatActivity {
 
 
         fabWriteReview = (FloatingActionButton) findViewById(R.id.fab_write_review);
+        final String finalToiletId = toiletId;
         fabWriteReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Start write review activity
                 Intent intent = new Intent(ToiletDetailActivity.this, WriteToiletReviewActivity.class);
+                intent.putExtra("ToiletID", finalToiletId);
                 startActivity(intent);
             }
         });
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.reviewList);
 
@@ -113,7 +137,6 @@ public class ToiletDetailActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish(); // close this activity and return to preview activity (if there is any)
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

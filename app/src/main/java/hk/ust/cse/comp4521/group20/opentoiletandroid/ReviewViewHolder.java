@@ -31,5 +31,5 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder{
         mDescField.setText(desc);
     }
 
-    public void setRating(int rating) {mRatingBar.setRating(rating);}
+    public void setRating(float rating) {mRatingBar.setRating(rating);}
 }
