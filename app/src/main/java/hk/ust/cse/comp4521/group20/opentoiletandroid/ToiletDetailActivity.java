@@ -1,30 +1,24 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import hk.ust.cse.comp4521.group20.opentoiletandroid.R;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
 
 
 public class ToiletDetailActivity extends AppCompatActivity {
@@ -84,13 +78,6 @@ public class ToiletDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    public void onClick(View v) {
-        if(v.getId() == R.id.btn_view_location) {
-            Intent intent = new Intent(this, PathAdvisorActivity.class);
-            startActivity(intent);
-        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.reviewList);
 
@@ -112,6 +99,13 @@ public class ToiletDetailActivity extends AppCompatActivity {
             }
         };
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    public void onClick(View v) {
+        if(v.getId() == R.id.btn_view_location) {
+            Intent intent = new Intent(this, PathAdvisorActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
