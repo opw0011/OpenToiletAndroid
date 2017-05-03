@@ -84,4 +84,7 @@
     <string name="not_logged_in">Log in for more features</string>
     <string name="nav_account_login">Log in</string>
     <string name="nav_account_logout">Log out</string>
+
+    <string name="facebook_application_id" translatable="false">420677231652299</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb420677231652299</string>
 </resources>

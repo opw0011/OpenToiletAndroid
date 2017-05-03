@@ -194,6 +194,9 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(
                         AuthUI.getInstance()
                                 .createSignInIntentBuilder()
+                                .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+//                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
                                 .build(),
                         0);
             }
@@ -248,13 +251,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     protected void setHeader(String username, String email, Uri imageURL){
-        if (username != null) {
+        if (username != null || email != null) {
             profileName.setText(username);
             if (email != null) {
                 profileEmail.setText(email);
             }
-            if (imageURL != null)
-                profilePic.setImageURI(imageURL);
+
+            // TODO: Display the Profile Pic
+//            if (imageURL != null)
+//                profilePic.setImageURI(imageURL);
         } else {
             profileName.setText("");
             profileEmail.setText(getText(R.string.not_logged_in));
