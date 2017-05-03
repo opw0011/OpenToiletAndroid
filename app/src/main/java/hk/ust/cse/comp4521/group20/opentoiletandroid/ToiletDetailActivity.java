@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,7 +19,8 @@ import android.webkit.WebViewClient;
 public class ToiletDetailActivity extends AppCompatActivity {
 
     CollapsingToolbarLayout collapsingToolbarLayout;
-//    WebView webView;
+    FloatingActionButton fab;
+    FloatingActionButton fabWriteReview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +42,23 @@ public class ToiletDetailActivity extends AppCompatActivity {
             collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.primary_text_light));
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: Bookmark toilet into local storage
                 Snackbar.make(view, "Successfully bookmarked the toilet.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+
+        fabWriteReview = (FloatingActionButton) findViewById(R.id.fab_write_review);
+        fabWriteReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Initial write review activity
+                Snackbar.make(view, "Write Review", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -65,22 +78,5 @@ public class ToiletDetailActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private class MyWebViewClient  extends WebViewClient {  //HERE IS THE MAIN CHANGE.
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return (false);
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            if (url.equals("http://pathadvisor.ust.hk/m.interface.html")) {
-                // clickFillInItem({roomName:'LIFT 19', floor:'4' , coor: { x:'2080', y:'1810'} , roomId:'p228'})
-//                webView.loadUrl("javascript:clickFillInItem({roomName:'LIFT 19', floor:'4' , coor: { x:'2080', y:'1810'} , roomId:'p228'});");
-            }
-        }
     }
 }
