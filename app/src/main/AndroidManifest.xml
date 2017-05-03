@@ -29,7 +29,9 @@
             android:name=".ToiletDetailActivity"
             android:label="@string/title_activity_toilet_detail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PathAdvisorActivity"></activity>
+        <activity
+            android:name=".PathAdvisorActivity"
+            android:parentActivityName="hk.ust.cse.comp4521.group20.opentoiletandroid.ToiletDetailActivity"></activity>
     </application>
 
 </manifest>
