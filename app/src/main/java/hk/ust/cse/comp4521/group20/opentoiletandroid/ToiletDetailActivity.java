@@ -101,6 +101,28 @@ public class ToiletDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.reviewList);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("review_items/"+toiletId);
+        mAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.review_list_item, ReviewViewHolder.class, mRef) {
+            @Override
+            protected void populateViewHolder(ReviewViewHolder reviewViewHolder, Review review, int position) {
+                reviewViewHolder.setTitle(review.getTitle());
+                reviewViewHolder.setDesc(review.getContent());
+                reviewViewHolder.setRating(review.getScore());
+            }
+        };
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     public void onClick(View v) {
