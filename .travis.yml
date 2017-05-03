@@ -48,4 +48,4 @@ branches:
     - master
     
 after_failure: 
-    - "cat $TRAVIS_BUILD_DIR/app/build/reports/lint-results-debug.xml"
+    - "cat $TRAVIS_BUILD_DIR/app/build/reports/lint-results.xml"
