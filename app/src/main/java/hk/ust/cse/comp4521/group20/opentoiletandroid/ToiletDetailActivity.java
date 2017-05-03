@@ -112,17 +112,6 @@ public class ToiletDetailActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("review_items/"+toiletId);
-        mAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.review_list_item, ReviewViewHolder.class, mRef) {
-            @Override
-            protected void populateViewHolder(ReviewViewHolder reviewViewHolder, Review review, int position) {
-                reviewViewHolder.setTitle(review.getTitle());
-                reviewViewHolder.setDesc(review.getContent());
-                reviewViewHolder.setRating(review.getScore());
-            }
-        };
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     public void onClick(View v) {
