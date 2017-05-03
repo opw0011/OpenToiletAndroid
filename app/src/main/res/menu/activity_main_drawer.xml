@@ -25,7 +25,7 @@
             <item
                 android:id="@+id/nav_account"
                 android:icon="@drawable/ic_menu_account"
-                android:title="Account" />
+                android:title="@string/nav_account_login" />
             <item
                 android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_menu_manage"

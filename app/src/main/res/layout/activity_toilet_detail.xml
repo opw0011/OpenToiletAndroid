@@ -62,7 +62,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/rl">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card_top"
@@ -115,6 +116,14 @@
                         android:layout_below="@id/card_header_group"
                         android:background="#EEE"/>
 
+                    <Button
+                        android:text="Show Location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_location"
+                        android:id="@+id/btn_view_location"
+                        android:onClick="onClick"/>
+
                     <TextView
                         android:text="Location:"
                         android:layout_width="wrap_content"
@@ -122,13 +131,6 @@
                         android:id="@+id/tv_location"
                         android:layout_below="@+id/card_header_group"
                         android:padding="@dimen/spacing_medium" />
-
-                    <WebView
-                        android:id="@+id/wv_main"
-                        android:layout_width="match_parent"
-                        android:layout_height="400dp"
-                        android:layout_below="@+id/tv_location"
-                        tools:ignore="WebViewLayout" />
 
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
@@ -182,6 +184,30 @@
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
+  
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@id/app_bar_layout"
+        app:layout_anchorGravity="bottom|right|end"
+        app:srcCompat="@drawable/ic_bookmark_white_24dp"
+        app:pressedTranslationZ="12dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/spacing_large"
+        app:srcCompat="@drawable/ic_pencil_white_24dp"
+        app:pressedTranslationZ="24dp"
+        app:layout_anchor="@id/rl"
+        app:layout_anchorGravity="bottom|right"
+        android:id="@+id/fab_write_review" />
+
+
 
 </android.support.design.widget.CoordinatorLayout>
+
 

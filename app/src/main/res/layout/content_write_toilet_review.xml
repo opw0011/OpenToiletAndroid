@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_write_toilet_review"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.WriteToiletReviewActivity"
+    tools:showIn="@layout/activity_write_toilet_review">
+
+    <TextView
+        android:text="Please rate this toilet:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_rate_toilet"
+        android:textSize="24dp"
+        android:layout_centerHorizontal="true"/>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:layout_weight="1"
+        android:layout_below="@+id/tv_rate_toilet"
+        android:layout_centerHorizontal="true" />
+
+    <View
+        android:id="@+id/lineSeparator"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/ratingBar"
+        android:background="@color/colorDivider"/>
+
+    <SeekBar
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:max="60"
+        android:progress="1"
+        android:id="@+id/sb_waiting_time"
+        android:layout_below="@+id/tv_waiting_time"
+        android:layout_alignParentStart="true" />
+
+
+    <View
+        android:id="@+id/lineSeparator2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/sb_waiting_time"
+        android:background="@color/colorDivider"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tiLayout_title"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:layout_below="@+id/lineSeparator2">
+
+        <EditText
+            android:id="@+id/input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:hint="Title (Optional)" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tiLayout_title"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:id="@+id/tiLayout_content">
+
+        <EditText
+            android:id="@+id/et_review_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:maxLines="5"
+            android:hint="Content (Optional)" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:text="Upload Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tiLayout_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="29dp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:id="@+id/btn_upload_image" />
+
+    <Button
+        android:text="Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_upload_image"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_alignParentStart="true"
+
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:id="@+id/button2" />
+
+    <TextView
+        android:text="Waiting Time:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_waiting_time"
+        android:layout_below="@+id/lineSeparator"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
