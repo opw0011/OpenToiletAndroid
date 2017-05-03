@@ -15,24 +15,24 @@ public class Toilet {
     private int floor;
     private Gender gender;
     private String image_url;
-    private boolean hasAccessibleToilet;
-    private boolean hasChangingRoom;
-    private boolean hasShower;
-    private int totalScore;
-    private int totalWaitingMinute;
+    private boolean has_accessible_toilet;
+    private boolean has_changing_room;
+    private boolean has_shower;
+    private int total_score;
+    private int total_waiting_minute;
     private int count;
 
     public Toilet(boolean has_changing_room, List<Integer> lift, String name, int floor, Gender gender, String image_url, boolean has_accessible_toilet, boolean has_shower, int total_score, int total_waiting_minute, int count) {
-        this.hasChangingRoom = has_changing_room;
+        this.has_changing_room = has_changing_room;
         this.lift = lift;
         this.name = name;
         this.floor = floor;
         this.gender = gender;
         this.image_url = image_url;
-        this.hasAccessibleToilet = has_accessible_toilet;
-        this.hasShower = has_shower;
-        this.totalScore = total_score;
-        this.totalWaitingMinute = total_waiting_minute;
+        this.has_accessible_toilet = has_accessible_toilet;
+        this.has_shower = has_shower;
+        this.total_score = total_score;
+        this.total_waiting_minute = total_waiting_minute;
         this.count = count;
     }
 
@@ -59,24 +59,24 @@ public class Toilet {
         return image_url;
     }
 
-    public boolean isHasAccessibleToilet() {
-        return hasAccessibleToilet;
+    public boolean isHas_accessible_toilet() {
+        return has_accessible_toilet;
     }
 
-    public boolean isHasChangingRoom() {
-        return hasChangingRoom;
+    public boolean isHas_changing_room() {
+        return has_changing_room;
     }
 
-    public boolean isHasShower() {
-        return hasShower;
+    public boolean isHas_shower() {
+        return has_shower;
     }
 
-    public int getTotalScore() {
-        return totalScore;
+    public int getTotal_score() {
+        return total_score;
     }
 
-    public int getTotalWaitingMinute() {
-        return totalWaitingMinute;
+    public int getTotal_waiting_minute() {
+        return total_waiting_minute;
     }
 
     public int getCount() {
