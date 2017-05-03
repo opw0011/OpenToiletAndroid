@@ -47,4 +47,5 @@ branches:
   only: 
     - master
     
-after_failure: "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"
+after_failure: 
+    - "cat $TRAVIS_BUILD_DIR/app/build/reports/lint-results-debug.xml"
