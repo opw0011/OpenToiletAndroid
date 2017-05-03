@@ -1,6 +1,7 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 
+import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+
+import static java.lang.Math.round;
 
 
 /**
@@ -55,12 +58,12 @@ public class ToiletListFragment extends Fragment {
             @Override
             protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {
                 toiletViewHolder.setName(toilet.getName());
-                toiletViewHolder.setText("lift: " + toilet.getLift() + " rating: " + toilet.getTotal_score() / toilet.getCount());
+                String liftString = toilet.getLift().toString();
+                toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length()-1), (double) toilet.getTotal_score() / toilet.getCount()));
             }
         };
         mRecyclerView.setAdapter(mAdapter);
-
-
+        
         return view;
     }
 
