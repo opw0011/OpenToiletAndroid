@@ -57,9 +57,9 @@ public class ToiletDetailActivity extends AppCompatActivity {
         fabWriteReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Initial write review activity
-                Snackbar.make(view, "Write Review", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // Start write review activity
+                Intent intent = new Intent(ToiletDetailActivity.this, WriteToiletReviewActivity.class);
+                startActivity(intent);
             }
         });
     }
