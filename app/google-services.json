@@ -59,6 +59,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "658392514610-3tqnh73n2i7oi0gpju9keng1c3gbk8qn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hk.ust.cse.comp4521.group20.opentoiletandroid",
+            "certificate_hash": "f9607d2a3a0aecdd725de5212896843e03e03325"
+          }
+        },
+        {
           "client_id": "658392514610-lvono4huh9v419b76a3caflfs1aplr18.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
