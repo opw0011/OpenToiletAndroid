@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+
 
 /**
  * Created by samch on 2017/5/2.
@@ -14,6 +16,8 @@ public class ToiletViewHolder extends RecyclerView.ViewHolder implements View.On
     private final TextView mNameField;
     private final TextView mTextField;
     private Context context;
+    private Toilet toilet;
+    private String toiletId;
 
     public ToiletViewHolder(View itemView) {
         super(itemView);
@@ -36,6 +40,19 @@ public class ToiletViewHolder extends RecyclerView.ViewHolder implements View.On
         Intent intent = new Intent(context, ToiletDetailActivity.class);
         // TODO: put the selected toilet data in the intent
         intent.putExtra("ToiletName", mNameField.getText().toString());
+        intent.putExtra("ToiletTotalScore", toilet.getTotal_score());
+        intent.putExtra("ToiletReviewCount", toilet.getCount());
+        intent.putExtra("ToiletFloor", toilet.getFloor());
+        intent.putExtra("ToiletLift", toilet.getLift().toString());
+        intent.putExtra("ToiletId", toiletId);
         context.startActivity(intent);
+    }
+
+    public void setToilet(Toilet toilet) {
+        this.toilet = toilet;
+    }
+
+    public void setToiletId(String toiletId) {
+        this.toiletId = toiletId;
     }
 }
