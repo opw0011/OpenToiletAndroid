@@ -31,7 +31,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PathAdvisorActivity"
-            android:parentActivityName="hk.ust.cse.comp4521.group20.opentoiletandroid.ToiletDetailActivity"></activity>
+            android:parentActivityName=".ToiletDetailActivity" />
+        <activity
+            android:name=".WriteToiletReviewActivity"
+            android:label="@string/title_activity_write_toilet_review"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ToiletDetailActivity"></activity>
     </application>
 
 </manifest>
