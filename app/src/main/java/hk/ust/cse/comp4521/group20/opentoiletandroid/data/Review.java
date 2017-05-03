@@ -9,11 +9,11 @@ public class Review {
     private String title;
     private String content;
     private String created_at;
-    private int score;
+    private float score;
     private int waiting_minute;
     private String image_url;
 
-    public Review(String user_id, String title, String content, String created_at, int score, int waiting_minute, String image_url) {
+    public Review(String user_id, String title, String content, String created_at, float score, int waiting_minute, String image_url) {
         this.user_id = user_id;
         this.title = title;
         this.content = content;
@@ -25,7 +25,7 @@ public class Review {
 
     public Review(){}
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
