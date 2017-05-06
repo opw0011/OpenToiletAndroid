@@ -36,10 +36,10 @@ public class ToiletDetailActivity extends AppCompatActivity {
     private FloatingActionButton fabWriteReview;
     private DatabaseReference mReviewRef;
     private DatabaseReference mToiletRef;
+    private static String toiletId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String toiletId ="";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toilet_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -51,7 +51,7 @@ public class ToiletDetailActivity extends AppCompatActivity {
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
-        // Get the data passed from by the intent
+        // Get the data passed by the intent
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.primary_text_light));
@@ -105,13 +105,12 @@ public class ToiletDetailActivity extends AppCompatActivity {
 
 
         fabWriteReview = (FloatingActionButton) findViewById(R.id.fab_write_review);
-        final String finalToiletId = toiletId;
         fabWriteReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Start write review activity
                 Intent intent = new Intent(ToiletDetailActivity.this, WriteToiletReviewActivity.class);
-                intent.putExtra("ToiletID", finalToiletId);
+                intent.putExtra("ToiletID", toiletId);
                 startActivity(intent);
             }
         });
@@ -120,6 +119,7 @@ public class ToiletDetailActivity extends AppCompatActivity {
     public void onClick(View v) {
         if(v.getId() == R.id.btn_view_location) {
             Intent intent = new Intent(this, PathAdvisorActivity.class);
+            intent.putExtra("ToiletID", toiletId);
             startActivity(intent);
         }
     }
