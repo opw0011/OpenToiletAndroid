@@ -39,11 +39,11 @@ public class ToiletViewHolder extends RecyclerView.ViewHolder implements View.On
     public void onClick(View v) {
         Intent intent = new Intent(context, ToiletDetailActivity.class);
         // TODO: put the selected toilet data in the intent
-        intent.putExtra("ToiletName", mNameField.getText().toString());
-        intent.putExtra("ToiletTotalScore", toilet.getTotal_score());
-        intent.putExtra("ToiletReviewCount", toilet.getCount());
-        intent.putExtra("ToiletFloor", toilet.getFloor());
-        intent.putExtra("ToiletLift", toilet.getLift().toString());
+//        intent.putExtra("ToiletName", mNameField.getText().toString());
+//        intent.putExtra("ToiletTotalScore", toilet.getTotal_score());
+//        intent.putExtra("ToiletReviewCount", toilet.getCount());
+//        intent.putExtra("ToiletFloor", toilet.getFloor());
+//        intent.putExtra("ToiletLift", toilet.getLift().toString());
         intent.putExtra("ToiletId", toiletId);
         context.startActivity(intent);
     }

@@ -35,7 +35,9 @@ public class PathAdvisorActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 // clickFillInItem({roomName:'LIFT 19', floor:'4' , coor: { x:'2080', y:'1810'} , roomId:'p228'})
-                mWebView.loadUrl("javascript:setTimeout(function() {clickFillInItem({roomName:'LIFT 19', floor:'4' , coor: { x:'2080', y:'1810'} , roomId:'p228'})}, 1000);");
+                mWebView.loadUrl("javascript:setTimeout(function() " +
+                        "{clickFillInItem({roomName:'LIFT 19', floor:'4' , " +
+                        "coor: { x:'2080', y:'1810'} , roomId:'p228'})}, 1000);");
             }
         });
 

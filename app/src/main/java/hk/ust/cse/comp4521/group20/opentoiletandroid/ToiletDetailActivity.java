@@ -9,28 +9,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
 
 
 public class ToiletDetailActivity extends AppCompatActivity {
+    private static final String TAG = "ToiletDetailActivity";
 
-    CollapsingToolbarLayout collapsingToolbarLayout;
-
-    WebView webView;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
     private RecyclerView mRecyclerView;
     private FirebaseRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    FloatingActionButton fab;
-    FloatingActionButton fabWriteReview;
+    private FloatingActionButton fab;
+    private FloatingActionButton fabWriteReview;
+    private DatabaseReference mReviewRef;
+    private DatabaseReference mToiletRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +54,26 @@ public class ToiletDetailActivity extends AppCompatActivity {
         // Get the data passed from by the intent
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-            collapsingToolbarLayout.setTitle(bundle.getString("ToiletName"));
-            ((TextView) findViewById(R.id.tv_header)).setText(String.format("Avg Score: %.1f", (double) bundle.getInt("ToiletTotalScore") / bundle.getInt("ToiletReviewCount")));
-            ((TextView) findViewById(R.id.textView6)).setText(String.format("Count: %d", bundle.getInt("ToiletReviewCount")));
-            String liftString = bundle.getString("ToiletLift");
-            ((TextView) findViewById(R.id.description)).setText(String.format("Details:\n%d/F, Lift: %s", bundle.getInt("ToiletFloor"), liftString.substring(1, liftString.length()-1)));
             collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.primary_text_light));
             toiletId = bundle.getString("ToiletId");
+            Log.d(TAG, "ToiletId: " + toiletId);
+            mToiletRef = FirebaseDatabase.getInstance().getReference("toilet_items/" + toiletId);
+            mToiletRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Toilet toilet = dataSnapshot.getValue(Toilet.class);
+                    collapsingToolbarLayout.setTitle(toilet.getName());
+                    ((TextView) findViewById(R.id.tv_header)).setText(String.format("Avg Score: %.1f", (double) toilet.getTotal_score() / toilet.getCount()));
+                    ((TextView) findViewById(R.id.textView6)).setText(String.format("Count: %d", toilet.getCount()));
+                    ((TextView) findViewById(R.id.description)).setText(String.format("Details:\n%d/F, Lift: %s", toilet.getFloor(), toilet.getLift().toString()));
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Failed to read value
+                    Log.w(TAG, "Failed to read value.", databaseError.toException());
+                }
+            });
         }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.reviewList);
@@ -64,8 +82,8 @@ public class ToiletDetailActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("review_items/"+toiletId);
-        mAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.review_list_item, ReviewViewHolder.class, mRef) {
+        mReviewRef = FirebaseDatabase.getInstance().getReference("review_items/"+toiletId);
+        mAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.review_list_item, ReviewViewHolder.class, mReviewRef) {
             @Override
             protected void populateViewHolder(ReviewViewHolder reviewViewHolder, Review review, int position) {
                 reviewViewHolder.setTitle(review.getTitle());
