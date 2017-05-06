@@ -10,9 +10,10 @@ public class Toilet {
     public enum Gender {
         M, F, Both
     }
+
     private List<Integer> lift;
     private String name;
-    private int floor;
+    private String floor;
     private Gender gender;
     private String image_url;
     private boolean has_accessible_toilet;
@@ -21,8 +22,10 @@ public class Toilet {
     private int total_score;
     private int total_waiting_minute;
     private int count;
+    private int pa_pos_x;
+    private int pa_pos_y;
 
-    public Toilet(boolean has_changing_room, List<Integer> lift, String name, int floor, Gender gender, String image_url, boolean has_accessible_toilet, boolean has_shower, int total_score, int total_waiting_minute, int count) {
+    public Toilet(boolean has_changing_room, List<Integer> lift, String name, String floor, Gender gender, String image_url, boolean has_accessible_toilet, boolean has_shower, int total_score, int total_waiting_minute, int count, int pa_pos_x, int pa_pos_y) {
         this.has_changing_room = has_changing_room;
         this.lift = lift;
         this.name = name;
@@ -34,10 +37,12 @@ public class Toilet {
         this.total_score = total_score;
         this.total_waiting_minute = total_waiting_minute;
         this.count = count;
+        this.pa_pos_x = pa_pos_x;
+        this.pa_pos_y = pa_pos_y;
     }
 
-    public Toilet(){}
-
+    public Toilet() {
+    }
 
     public List<Integer> getLift() {
         return lift;
@@ -47,7 +52,7 @@ public class Toilet {
         return name;
     }
 
-    public int getFloor() {
+    public String getFloor() {
         return floor;
     }
 
@@ -81,5 +86,13 @@ public class Toilet {
 
     public int getCount() {
         return count;
+    }
+
+    public int getPa_pos_x() {
+        return pa_pos_x;
+    }
+
+    public int getPa_pos_y() {
+        return pa_pos_y;
     }
 }
