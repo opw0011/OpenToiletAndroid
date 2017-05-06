@@ -37,6 +37,7 @@ public class ToiletDetailActivity extends AppCompatActivity {
     private DatabaseReference mReviewRef;
     private DatabaseReference mToiletRef;
     private static String toiletId;
+    private static Toilet mToilet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +62,11 @@ public class ToiletDetailActivity extends AppCompatActivity {
             mToiletRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Toilet toilet = dataSnapshot.getValue(Toilet.class);
-                    collapsingToolbarLayout.setTitle(toilet.getName());
-                    ((TextView) findViewById(R.id.tv_header)).setText(String.format("Avg Score: %.1f", (double) toilet.getTotal_score() / toilet.getCount()));
-                    ((TextView) findViewById(R.id.textView6)).setText(String.format("Count: %d", toilet.getCount()));
-                    ((TextView) findViewById(R.id.description)).setText(String.format("Details:\n%d/F, Lift: %s", toilet.getFloor(), toilet.getLift().toString()));
+                    mToilet = dataSnapshot.getValue(Toilet.class);
+                    collapsingToolbarLayout.setTitle(mToilet.getName());
+                    ((TextView) findViewById(R.id.tv_header)).setText(String.format("Avg Score: %.1f", (double) mToilet.getTotal_score() / mToilet.getCount()));
+                    ((TextView) findViewById(R.id.textView6)).setText(String.format("Count: %d", mToilet.getCount()));
+                    ((TextView) findViewById(R.id.description)).setText(String.format("Details:\n%s/F, Lift: %s", mToilet.getFloor(), mToilet.getLift().toString()));
                 }
 
                 @Override
@@ -120,6 +121,12 @@ public class ToiletDetailActivity extends AppCompatActivity {
         if(v.getId() == R.id.btn_view_location) {
             Intent intent = new Intent(this, PathAdvisorActivity.class);
             intent.putExtra("ToiletID", toiletId);
+            if(mToilet != null && mToilet.getPa_pos_y() > 0 && mToilet.getPa_pos_x() > 0) {
+                intent.putExtra("name", mToilet.getName());
+                intent.putExtra("pos_x", mToilet.getPa_pos_x());
+                intent.putExtra("pos_y", mToilet.getPa_pos_y());
+                intent.putExtra("floor", mToilet.getFloor());
+            }
             startActivity(intent);
         }
     }
