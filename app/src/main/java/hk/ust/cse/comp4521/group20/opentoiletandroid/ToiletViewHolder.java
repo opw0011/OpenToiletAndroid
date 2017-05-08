@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
@@ -54,5 +56,17 @@ public class ToiletViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public void setToiletId(String toiletId) {
         this.toiletId = toiletId;
+    }
+
+    public void hide() {
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)itemView.getLayoutParams();
+        params.height = 0;
+        itemView.setLayoutParams(params);
+    }
+
+    public void show() {
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)itemView.getLayoutParams();
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        itemView.setLayoutParams(params);
     }
 }
