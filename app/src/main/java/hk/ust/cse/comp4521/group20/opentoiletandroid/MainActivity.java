@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private NavigationView navigationView;
 
-    private ImageView profilePic;
+    private SimpleDraweeView profilePic;
     private TextView profileEmail;
     private TextView profileName;
 
@@ -90,39 +91,19 @@ public class MainActivity extends AppCompatActivity
 
         // Get references to header
         View header = navigationView.getHeaderView(0);
-        profilePic = (ImageView) header.findViewById(R.id.profile_pic);
+        profilePic = (SimpleDraweeView) header.findViewById(R.id.profile_pic);
         profileEmail = (TextView) header.findViewById(R.id.profile_email);
         profileName = (TextView) header.findViewById(R.id.profile_name);
 
-        // TODO:  remove the following Firebase test code
-        // Testing write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("test-message");
-
-        myRef.setValue("Hello, World!");
-
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Value is: " + value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
+        // TODO: for testing profile img only, remove this dummy photo url
+        profilePic.setImageURI("http://ste.india.com/sites/default/files/2014/10/04/279580-kim-jong-un-700.jpg");
 
         // Check whether the user is logged in
         FirebaseUser user = auth.getCurrentUser();
         if(user != null) {
             // if yes, set the menu and the header
             navigationView.getMenu().findItem(R.id.nav_account).setTitle(R.string.nav_account_logout);
+            Log.d(TAG, "User: " + user.getDisplayName() + user.getEmail() + user.getPhotoUrl());
             setHeader(user.getDisplayName(), user.getEmail(), user.getPhotoUrl());
         }
     }
@@ -257,9 +238,11 @@ public class MainActivity extends AppCompatActivity
                 profileEmail.setText(email);
             }
 
-            // TODO: Display the Profile Pic
-//            if (imageURL != null)
-//                profilePic.setImageURI(imageURL);
+            //  Display the Profile Pic
+            if (imageURL != null) {
+                Log.d(TAG, imageURL.toString());
+                profilePic.setImageURI(imageURL);
+            }
         } else {
             profileName.setText("");
             profileEmail.setText(getText(R.string.not_logged_in));
