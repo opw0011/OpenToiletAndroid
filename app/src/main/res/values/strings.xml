@@ -88,6 +88,15 @@
 
     <string name="facebook_application_id" translatable="false">420677231652299</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb420677231652299</string>
+
+    <!-- TODO: Replace the default photo-->
+    <string name="default_profile_pic" translatable="false">http://ste.india.com/sites/default/files/2014/10/04/279580-kim-jong-un-700.jpg</string>
+
     <string name="title_activity_write_toilet_review">WriteToiletReviewActivity</string>
+    <string name="login_success">Login successful.</string>
+    <string name="login_cancelled">Login cancelled.</string>
+    <string name="login_no_internet_connection">Please connect to the Internet before continue.</string>
+    <string name="login_unknown_error">Unknown error occurred. Please try again later.</string>
+    <string name="logout_successful">Logout successful.</string>
 
 </resources>
