@@ -1,14 +1,17 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.iconics.context.IconicsContextWrapper;
+import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
@@ -41,6 +46,8 @@ public class ToiletDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toilet_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -64,9 +71,12 @@ public class ToiletDetailActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mToilet = dataSnapshot.getValue(Toilet.class);
                     collapsingToolbarLayout.setTitle(mToilet.getName());
-                    ((TextView) findViewById(R.id.tv_header)).setText(String.format("Avg Score: %.1f", (double) mToilet.getTotal_score() / mToilet.getCount()));
-                    ((TextView) findViewById(R.id.textView6)).setText(String.format("Count: %d", mToilet.getCount()));
-                    ((TextView) findViewById(R.id.description)).setText(String.format("Details:\n%s/F, Lift: %s", mToilet.getFloor(), mToilet.getLift().toString()));
+                    ((TextView) findViewById(R.id.tv_floor)).setText(String.format("%s", mToilet.getFloor()));
+                    ((TextView) findViewById(R.id.tv_lift)).setText(String.format("%s", TextUtils.join("," , mToilet.getLift())));
+                    ((TextView) findViewById(R.id.tv_avg_score)).setText(String.format("%.1f", (double) mToilet.getTotal_score() / mToilet.getCount()));
+                    ((TextView) findViewById(R.id.tv_waiting_time)).setText(String.format("%.1f minutes", (double) mToilet.getTotal_waiting_minute() / mToilet.getCount()));
+                    ((TextView) findViewById(R.id.tv_count)).setText(String.format("%d", mToilet.getCount()));
+//                    ((TextView) findViewById(R.id.description)).setText(String.format("Details:\n%s/F, Lift: %s", mToilet.getFloor(), mToilet.getLift().toString()));
                 }
 
                 @Override
@@ -143,5 +153,10 @@ public class ToiletDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(IconicsContextWrapper.wrap(newBase));
     }
 }
