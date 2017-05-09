@@ -5,19 +5,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -25,18 +24,10 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 
@@ -95,16 +86,13 @@ public class MainActivity extends AppCompatActivity
         profileEmail = (TextView) header.findViewById(R.id.profile_email);
         profileName = (TextView) header.findViewById(R.id.profile_name);
 
-        // TODO: for testing profile img only, remove this dummy photo url
-        profilePic.setImageURI("http://ste.india.com/sites/default/files/2014/10/04/279580-kim-jong-un-700.jpg");
 
         // Check whether the user is logged in
         FirebaseUser user = auth.getCurrentUser();
+        setHeader(user);
         if(user != null) {
             // if yes, set the menu and the header
             navigationView.getMenu().findItem(R.id.nav_account).setTitle(R.string.nav_account_logout);
-            Log.d(TAG, "User: " + user.getDisplayName() + user.getEmail() + user.getPhotoUrl());
-            setHeader(user.getDisplayName(), user.getEmail(), user.getPhotoUrl());
         }
     }
 
@@ -164,20 +152,25 @@ public class MainActivity extends AppCompatActivity
                         .signOut(this)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public void onComplete(@NonNull Task<Void> task) {
+                                // show a logout snackbar
+                                showSnackbar(getText(R.string.logout_successful), Snackbar.LENGTH_SHORT);
+
                                 // user is now signed out
                                 navigationView.getMenu().findItem(R.id.nav_account).setTitle(R.string.nav_account_login);
 
                                 // reset the header
-                                setHeader(null, null, null);
+                                setHeader(null);
                             }
                         });
         } else {
                 startActivityForResult(
                         AuthUI.getInstance()
                                 .createSignInIntentBuilder()
+                                .setIsSmartLockEnabled(false)
+                                .setTheme(R.style.AppTheme)
                                 .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-//                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
                                 .build(),
                         0);
             }
@@ -199,30 +192,32 @@ public class MainActivity extends AppCompatActivity
 
             // Successfully signed in
             if (resultCode == ResultCodes.OK) {
-                navigationView.getMenu().findItem(R.id.nav_account).setTitle(R.string.nav_account_logout);
+                // Show a login success snackbar
+                showSnackbar(getText(R.string.login_success), Snackbar.LENGTH_SHORT);
 
                 // Update the user name and email
                 FirebaseUser user = auth.getCurrentUser();
                 navigationView.getMenu().findItem(R.id.nav_account).setTitle(R.string.nav_account_logout);
 
-                setHeader(user.getDisplayName(), user.getEmail(), user.getPhotoUrl());
+                setHeader(user);
                 return;
             } else {
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
+                    showSnackbar(getText(R.string.login_cancelled), Snackbar.LENGTH_SHORT);
                      return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
                     Log.d(TAG, "No network");
-//                    showSnackbar(R.string.no_internet_connection);
+                    showSnackbar(getText(R.string.login_no_internet_connection), Snackbar.LENGTH_SHORT);
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
                     Log.d(TAG, "Unknown Error");
-//                    showSnackbar(R.string.unknown_error);
+                    showSnackbar(getText(R.string.login_unknown_error), Snackbar.LENGTH_SHORT);
                     return;
                 }
             }
@@ -231,21 +226,36 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    protected void setHeader(String username, String email, Uri imageURL){
-        if (username != null || email != null) {
-            profileName.setText(username);
-            if (email != null) {
-                profileEmail.setText(email);
+    protected void setHeader(FirebaseUser user) {
+        if (user != null) {
+            String username = user.getDisplayName();
+            String email = user.getEmail();
+            Uri imageURL = user.getPhotoUrl();
+
+            // Set the user email
+            profileEmail.setText(email);
+
+            // Set the User name
+            if(username != null) {
+                profileName.setText(username);
             }
 
             //  Display the Profile Pic
             if (imageURL != null) {
-                Log.d(TAG, imageURL.toString());
                 profilePic.setImageURI(imageURL);
+            } else {
+                profilePic.setImageURI(getText(R.string.default_profile_pic).toString());
             }
+
         } else {
             profileName.setText("");
             profileEmail.setText(getText(R.string.not_logged_in));
+            profilePic.setImageURI(getText(R.string.default_profile_pic).toString());
         }
+    }
+
+    protected void showSnackbar(CharSequence msg, int duration) {
+        Snackbar.make(findViewById(R.id.fab), msg, duration)
+                .setAction("Action", null).show();
     }
 }
