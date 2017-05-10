@@ -79,38 +79,58 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <Button
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:text="{gmd_location_on} Show in Path Advisor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btn_view_location"
+                        android:onClick="onClick"/>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:padding="@dimen/spacing_medium">
 
-                        <TextView
+                        <LinearLayout
+                            android:layout_weight="1"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="{gmd_layers} Floor:"
-                            android:textSize="@dimen/text_medium" />
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="{gmd_layers} Floor:"
 
-                        <TextView
-                            android:id="@+id/tv_floor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2/F"
-                            android:textSize="@dimen/text_medium" />
+                                android:textSize="@dimen/text_medium" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:text="{gmd_directions_walk} Lift:"
-                            android:textSize="@dimen/text_medium" />
+                            <TextView
+                                android:id="@+id/tv_floor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2/F"
+                                android:textSize="@dimen/text_medium" />
 
-                        <TextView
-                            android:id="@+id/tv_lift"
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_weight="1"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="17,18"
-                            android:textSize="@dimen/text_medium" />
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="{gmd_directions_walk} Lift:"
+                                android:textSize="@dimen/text_medium" />
+
+                            <TextView
+                                android:id="@+id/tv_lift"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="17,18"
+                                android:textSize="@dimen/text_medium" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -155,12 +175,13 @@
 
                     </LinearLayout>
 
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:orientation="horizontal"
                         android:padding="@dimen/spacing_medium"
-                        android:textSize="@dimen/text_medium"
-                        android:orientation="horizontal">
+                        android:textSize="@dimen/text_medium">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -180,53 +201,76 @@
                         android:id="@+id/lineSeparator"
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"
-                        android:background="#EEE"/>
+                        android:background="@color/colorDivider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/spacing_medium"
+                        android:textSize="@dimen/text_medium">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="{gmd_accessible} Accessible toilet:" />
+
+                        <TextView
+                            android:id="@+id/tv_has_accessible_toilet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="✔" />
 
 
-                    <Button
-                        android:text="Show Location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_location"
-                        android:id="@+id/btn_view_location"
-                        android:onClick="onClick"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/spacing_medium"
+                        android:textSize="@dimen/text_medium">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="{gmd_accessibility} Changing room:" />
+
+                        <TextView
+                            android:id="@+id/tv_has_changing_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="✔" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/spacing_medium"
+                        android:textSize="@dimen/text_medium">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="{gmd_hot_tub} Shower:" />
+
+                        <TextView
+                            android:id="@+id/tv_has_shower"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="✔" />
+
+
+                    </LinearLayout>
+
+
 
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
-
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--app:cardElevation="@dimen/spacing_medium"-->
-                <!--app:cardUseCompatPadding="true"-->
-                <!--android:layout_below="@+id/card_top"-->
-                <!--android:id="@+id/card_desc">-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="vertical">-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/description"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_margin="@dimen/spacing_large"-->
-                        <!--android:text="@string/long_dummy_text"-->
-                        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1" />-->
-                    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:id="@+id/title"&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:layout_marginLeft="@dimen/spacing_large"&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:layout_marginRight="@dimen/spacing_large"&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:layout_marginTop="@dimen/spacing_large"&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:textAppearance="@style/TextAppearance.AppCompat.Headline"&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:text="This is title "/>&ndash;&gt;-->
-                <!--</LinearLayout>-->
-
-            <!--</android.support.v7.widget.CardView>-->
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -235,13 +279,28 @@
                 app:cardUseCompatPadding="true"
                 android:layout_below="@+id/card_top">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/reviewList"
-                    android:scrollbars="vertical"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/spacing_medium"
+                        android:text="Toilet Reviews"
+                        android:textColor="@color/colorText"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_large" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/reviewList"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    </android.support.v7.widget.RecyclerView>
+
+                </LinearLayout>
             </android.support.v7.widget.CardView>
 
         </RelativeLayout>

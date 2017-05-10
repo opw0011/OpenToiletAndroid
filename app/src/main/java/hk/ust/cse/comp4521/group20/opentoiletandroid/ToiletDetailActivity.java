@@ -76,7 +76,9 @@ public class ToiletDetailActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.tv_avg_score)).setText(String.format("%.1f", (double) mToilet.getTotal_score() / mToilet.getCount()));
                     ((TextView) findViewById(R.id.tv_waiting_time)).setText(String.format("%.1f minutes", (double) mToilet.getTotal_waiting_minute() / mToilet.getCount()));
                     ((TextView) findViewById(R.id.tv_count)).setText(String.format("%d", mToilet.getCount()));
-//                    ((TextView) findViewById(R.id.description)).setText(String.format("Details:\n%s/F, Lift: %s", mToilet.getFloor(), mToilet.getLift().toString()));
+                    ((TextView) findViewById(R.id.tv_has_accessible_toilet)).setText(mToilet.isHas_accessible_toilet() ? "✔" : "❌");
+                    ((TextView) findViewById(R.id.tv_has_changing_room)).setText(mToilet.isHas_changing_room()? "✔" : "❌");
+                    ((TextView) findViewById(R.id.tv_has_shower)).setText(mToilet.isHas_shower() ? "✔" : "❌");
                 }
 
                 @Override
