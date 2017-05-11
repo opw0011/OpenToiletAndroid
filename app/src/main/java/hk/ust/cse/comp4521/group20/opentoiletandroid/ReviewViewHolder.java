@@ -1,6 +1,7 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
 
 /**
  * Created by samch on 2017/5/3.
@@ -18,6 +20,7 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder{
     private final RatingBar mRatingBar;
     private Context context;
     private ImageView imageView;
+    
 
     public ReviewViewHolder(View itemView) {
         super(itemView);
@@ -40,7 +43,11 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder{
 
     public void setImageView (String ImageURL) {
         Picasso.with(context)
-            .load(ImageURL)
-            .resize(200, 0).into(imageView);
+            .load(ImageURL).into(imageView);
+        imageView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ImageActivity.class);
+            intent.putExtra("ImageURL", ImageURL);
+            context.startActivity(intent);
+        });
     }
 }
