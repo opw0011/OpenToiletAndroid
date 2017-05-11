@@ -169,8 +169,8 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
                 }
 
                 toilet.setCount(toilet.getCount() + 1);
-                toilet.setTotal_score(toilet.getTotal_score() + ratingBar.getRating());
-                toilet.setTotal_waiting_minute(toilet.getTotal_waiting_minute() + seekBar.getProgress());
+                toilet.setTotal_score(toilet.getTotal_score() + review.getScore());
+                toilet.setTotal_waiting_minute(toilet.getTotal_waiting_minute() + review.getWaiting_minute());
 
                 // Set value and report transaction success
                 mutableData.setValue(toilet);
