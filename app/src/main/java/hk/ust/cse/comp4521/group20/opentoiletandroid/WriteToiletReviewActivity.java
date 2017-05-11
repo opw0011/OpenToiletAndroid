@@ -29,6 +29,8 @@ import java.util.UUID;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
 
 public class WriteToiletReviewActivity extends AppCompatActivity {
+    protected static final int SELECT_IMAGE = 1;
+    private static final String TAG = "WriteToiletReview";
     private RatingBar ratingBar;
     private SeekBar seekBar;
     private EditText titleText;
@@ -36,17 +38,9 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
     private Button button;
     private String toiletId;
     private Button uploadImageButton;
-
     private StorageReference storageReference;
     private FirebaseAuth auth;
-
-    private Uri selectedImageURI;
-
-
-    private static final String TAG = "WriteToiletReview";
-
-
-    protected static final int SELECT_IMAGE = 1;
+    private Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,39 +68,35 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
         contentText = (EditText) findViewById(R.id.et_review_content);
         button = (Button) findViewById(R.id.button2);
         final String finalToiletId = toiletId;
-        button.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener((View v) -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            String formattedDate = sdf.format(new Date());
 
-            //TODO: Refactor the entire block
-            @Override
-            public void onClick(View v) {
-                //TODO: add the image URL
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-                String formattedDate = sdf.format(new Date());
+            DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("review_items/"+ finalToiletId);
 
-                DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("review_items/"+ finalToiletId);
+            // Create a review object
+            Review review = new Review(auth.getCurrentUser().getUid(), titleText.getText().toString(), contentText.getText().toString(), formattedDate, ratingBar.getRating(), seekBar.getProgress(), "");
 
-                // if there photo attached, upload it
-                if(selectedImageURI != null) {
-                    ContentResolver cR = getApplicationContext().getContentResolver();
-                    MimeTypeMap mime = MimeTypeMap.getSingleton();
+            // if there photo attached, upload it
+            if(selectedImageUri != null) {
+                StorageReference imgRef = storageReference.child(getFilename(finalToiletId, selectedImageUri));
 
-                    StorageReference imgRef = storageReference.child("image_items/"+ finalToiletId + "/" + UUID.randomUUID()+ "." + mime.getExtensionFromMimeType(cR.getType(selectedImageURI)));
-                    imgRef.putFile(selectedImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        @SuppressWarnings("VisibleForTests")
-                        // Suppressed due to bugs with FirebaseStorage
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            mRef.push().setValue(new Review(auth.getCurrentUser().getUid(), titleText.getText().toString(), contentText.getText().toString(), formattedDate, ratingBar.getRating(), seekBar.getProgress(), taskSnapshot.getDownloadUrl().toString()));
-                            onBackPressed();
-                        }
-                    });
-                } else {
-                    mRef.push().setValue(new Review(auth.getCurrentUser().getUid(), titleText.getText().toString(), contentText.getText().toString(), formattedDate, ratingBar.getRating(), seekBar.getProgress(), ""));
+                imgRef.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    @SuppressWarnings("VisibleForTests")
+                    // Suppressed due to bugs with FirebaseStorage
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        review.setImage_url(taskSnapshot.getDownloadUrl().toString());
+                        mRef.push().setValue(review);
+                        onBackPressed();
+                    }
+                });
+            } else {
+                mRef.push().setValue(review);
 
-                    onBackPressed();
-                }
-
+                onBackPressed();
             }
+
         });
 
         uploadImageButton = (Button) findViewById(R.id.btn_upload_image);
@@ -140,11 +130,17 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(requestCode == SELECT_IMAGE) {
             if(resultCode == RESULT_OK) {
-                selectedImageURI = data.getData();
+                selectedImageUri = data.getData();
             }
         }
+    }
+
+    protected String getFilename(String toiletId, Uri imageUri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+
+        return "image_items/"+ toiletId + "/" + UUID.randomUUID()+ "." + mime.getExtensionFromMimeType(cR.getType(imageUri));
     }
 }
