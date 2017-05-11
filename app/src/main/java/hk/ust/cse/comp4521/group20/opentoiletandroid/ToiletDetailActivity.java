@@ -113,6 +113,9 @@ public class ToiletDetailActivity extends AppCompatActivity {
                 reviewViewHolder.setTitle(review.getTitle());
                 reviewViewHolder.setDesc(review.getContent());
                 reviewViewHolder.setRating(review.getScore());
+                if (review.getImage_url().length() != 0) {
+                    reviewViewHolder.setImageView(review.getImage_url());
+                }
             }
         };
         mRecyclerView.setAdapter(mAdapter);
