@@ -145,7 +145,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_bookmark) {
 
         } else if (id == R.id.nav_alarm) {
-
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new SOSListFragment());
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_account) {
             if (auth.getCurrentUser() != null) {
                 AuthUI.getInstance()

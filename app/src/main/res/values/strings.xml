@@ -99,4 +99,7 @@
     <string name="login_unknown_error">Unknown error occurred. Please try again later.</string>
     <string name="logout_successful">Logout successful.</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
