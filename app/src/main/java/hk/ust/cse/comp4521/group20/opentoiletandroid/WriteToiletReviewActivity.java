@@ -6,20 +6,29 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
 
 public class WriteToiletReviewActivity extends AppCompatActivity {
     private RatingBar ratingBar;
@@ -58,9 +67,39 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
                 String formattedDate = sdf.format(new Date());
 
-                DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("review_items/"+ finalToiletId);
-                // TODO: push user id, update the total_score and count
-                mRef.push().setValue(new Review("123", titleText.getText().toString(), contentText.getText().toString(), formattedDate, ratingBar.getRating(), seekBar.getProgress(), ""));
+                DatabaseReference mReviewRef = FirebaseDatabase.getInstance().getReference("review_items/"+ finalToiletId);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    mReviewRef.push().setValue(new Review(user.getUid(), titleText.getText().toString(), contentText.getText().toString(), formattedDate, ratingBar.getRating(), seekBar.getProgress(), ""));
+
+                    DatabaseReference mToiletRef = FirebaseDatabase.getInstance().getReference("toilet_items/"+ finalToiletId);
+                    mToiletRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData mutableData) {
+                            Toilet toilet = mutableData.getValue(Toilet.class);
+                            if (toilet == null) {
+                                return Transaction.success(mutableData);
+                            }
+
+                            toilet.setCount(toilet.getCount() + 1);
+                            toilet.setTotal_score(toilet.getTotal_score() + ratingBar.getRating());
+                            toilet.setTotal_waiting_minute(toilet.getTotal_waiting_minute() + seekBar.getProgress());
+
+                            // Set value and report transaction success
+                            mutableData.setValue(toilet);
+                            return Transaction.success(mutableData);
+                        }
+
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                            Log.d("Review", "postTransaction:onComplete:" + databaseError);
+                        }
+                    });
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.login_tips), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
                 onBackPressed();
             }
         });

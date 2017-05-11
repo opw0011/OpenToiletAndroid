@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Retrieve results from log in screen
@@ -257,5 +258,17 @@ public class MainActivity extends AppCompatActivity
     protected void showSnackbar(CharSequence msg, int duration) {
         Snackbar.make(findViewById(R.id.fab), msg, duration)
                 .setAction("Action", null).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Check whether the user is logged in
+        FirebaseUser user = auth.getCurrentUser();
+        setHeader(user);
+        if(user != null) {
+            // if yes, set the menu and the header
+            navigationView.getMenu().findItem(R.id.nav_account).setTitle(R.string.nav_account_logout);
+        }
     }
 }
