@@ -16,8 +16,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ResultCodes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +32,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.mikepenz.iconics.context.IconicsLayoutInflater;
+
+import java.util.Arrays;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
@@ -43,6 +52,8 @@ public class ToiletDetailActivity extends AppCompatActivity {
     private DatabaseReference mToiletRef;
     private static String toiletId;
     private static Toilet mToilet;
+
+    public static final int LOGIN = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,12 +132,67 @@ public class ToiletDetailActivity extends AppCompatActivity {
         fabWriteReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Start write review activity
-                Intent intent = new Intent(ToiletDetailActivity.this, WriteToiletReviewActivity.class);
-                intent.putExtra("ToiletID", toiletId);
-                startActivity(intent);
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    // Start write review activity
+                    Intent intent = new Intent(ToiletDetailActivity.this, WriteToiletReviewActivity.class);
+                    intent.putExtra("ToiletID", toiletId);
+                    startActivity(intent);
+                } else {
+                    Snackbar.make(view, getText(R.string.login_tips), Snackbar.LENGTH_SHORT)
+                            .setAction("Login", v -> {
+                                startActivityForResult(
+                                        AuthUI.getInstance()
+                                                .createSignInIntentBuilder()
+                                                .setIsSmartLockEnabled(false)
+                                                .setTheme(R.style.AppTheme)
+                                                .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                                                .build(),
+                                        0);
+                            }).show();
+
+                }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Retrieve results from log in screen
+        if (requestCode == LOGIN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            // Successfully signed in
+            if (resultCode == ResultCodes.OK) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    // Start write review activity
+                    Intent intent = new Intent(ToiletDetailActivity.this, WriteToiletReviewActivity.class);
+                    intent.putExtra("ToiletID", toiletId);
+                    startActivity(intent);
+                }
+                return;
+            } else {
+                // Sign in failed
+                if (response == null) {
+                    // User pressed back button
+                    Snackbar.make(findViewById(R.id.fab), getText(R.string.login_cancelled), Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    Log.d(TAG, "No network");
+                    Snackbar.make(findViewById(R.id.fab), getText(R.string.login_no_internet_connection), Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    Log.d(TAG, "Unknown Error");
+                    Snackbar.make(findViewById(R.id.fab), getText(R.string.login_unknown_error), Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     public void onClick(View v) {

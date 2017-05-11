@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -13,11 +14,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -27,6 +34,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
 
 public class WriteToiletReviewActivity extends AppCompatActivity {
     protected static final int SELECT_IMAGE = 1;
@@ -67,34 +75,36 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
         titleText = (EditText) findViewById(R.id.input_name);
         contentText = (EditText) findViewById(R.id.et_review_content);
         button = (Button) findViewById(R.id.button2);
-        final String finalToiletId = toiletId;
+
         button.setOnClickListener((View v) -> {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
             String formattedDate = sdf.format(new Date());
 
-            DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("review_items/"+ finalToiletId);
+            FirebaseUser user = auth.getCurrentUser();
+            if (user != null) {
+                // Create a review object
+                Review review = new Review(user.getUid(), titleText.getText().toString(), contentText.getText().toString(), formattedDate, ratingBar.getRating(), seekBar.getProgress(), "");
+                // if there photo attached, upload it
+                if (selectedImageUri != null) {
+                    StorageReference imgRef = storageReference.child(getFilename(toiletId, selectedImageUri));
 
-            // Create a review object
-            Review review = new Review(auth.getCurrentUser().getUid(), titleText.getText().toString(), contentText.getText().toString(), formattedDate, ratingBar.getRating(), seekBar.getProgress(), "");
-
-            // if there photo attached, upload it
-            if(selectedImageUri != null) {
-                StorageReference imgRef = storageReference.child(getFilename(finalToiletId, selectedImageUri));
-
-                imgRef.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    @SuppressWarnings("VisibleForTests")
-                    // Suppressed due to bugs with FirebaseStorage
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        review.setImage_url(taskSnapshot.getDownloadUrl().toString());
-                        mRef.push().setValue(review);
-                        onBackPressed();
-                    }
-                });
+                    imgRef.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        @SuppressWarnings("VisibleForTests")
+                        // Suppressed due to bugs with FirebaseStorage
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            review.setImage_url(taskSnapshot.getDownloadUrl().toString());
+                            reviewUpdate(review);
+                            onBackPressed();
+                        }
+                    });
+                } else {
+                    reviewUpdate(review);
+                    onBackPressed();
+                }
             } else {
-                mRef.push().setValue(review);
-
-                onBackPressed();
+                Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.login_tips), Toast.LENGTH_SHORT);
+                toast.show();
             }
 
         });
@@ -142,5 +152,35 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
 
         return "image_items/"+ toiletId + "/" + UUID.randomUUID()+ "." + mime.getExtensionFromMimeType(cR.getType(imageUri));
+    }
+
+    protected void reviewUpdate (Review review) {
+        final String finalToiletId = toiletId;
+        DatabaseReference mReviewRef = FirebaseDatabase.getInstance().getReference("review_items/"+ finalToiletId);
+        mReviewRef.push().setValue(review);
+
+        DatabaseReference mToiletRef = FirebaseDatabase.getInstance().getReference("toilet_items/"+ finalToiletId);
+        mToiletRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Toilet toilet = mutableData.getValue(Toilet.class);
+                if (toilet == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                toilet.setCount(toilet.getCount() + 1);
+                toilet.setTotal_score(toilet.getTotal_score() + ratingBar.getRating());
+                toilet.setTotal_waiting_minute(toilet.getTotal_waiting_minute() + seekBar.getProgress());
+
+                // Set value and report transaction success
+                mutableData.setValue(toilet);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                Log.d("Review", "postTransaction:onComplete:" + databaseError);
+            }
+        });
     }
 }

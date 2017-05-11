@@ -19,13 +19,13 @@ public class Toilet {
     private boolean has_accessible_toilet;
     private boolean has_changing_room;
     private boolean has_shower;
-    private int total_score;
+    private float total_score;
     private int total_waiting_minute;
     private int count;
     private int pa_pos_x;
     private int pa_pos_y;
 
-    public Toilet(boolean has_changing_room, List<Integer> lift, String name, String floor, Gender gender, String image_url, boolean has_accessible_toilet, boolean has_shower, int total_score, int total_waiting_minute, int count, int pa_pos_x, int pa_pos_y) {
+    public Toilet(boolean has_changing_room, List<Integer> lift, String name, String floor, Gender gender, String image_url, boolean has_accessible_toilet, boolean has_shower, float total_score, int total_waiting_minute, int count, int pa_pos_x, int pa_pos_y) {
         this.has_changing_room = has_changing_room;
         this.lift = lift;
         this.name = name;
@@ -76,7 +76,7 @@ public class Toilet {
         return has_shower;
     }
 
-    public int getTotal_score() {
+    public float getTotal_score() {
         return total_score;
     }
 
@@ -94,5 +94,57 @@ public class Toilet {
 
     public int getPa_pos_y() {
         return pa_pos_y;
+    }
+
+    public void setLift(List<Integer> lift) {
+        this.lift = lift;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public void setHas_accessible_toilet(boolean has_accessible_toilet) {
+        this.has_accessible_toilet = has_accessible_toilet;
+    }
+
+    public void setHas_changing_room(boolean has_changing_room) {
+        this.has_changing_room = has_changing_room;
+    }
+
+    public void setHas_shower(boolean has_shower) {
+        this.has_shower = has_shower;
+    }
+
+    public void setTotal_score(float total_score) {
+        this.total_score = total_score;
+    }
+
+    public void setTotal_waiting_minute(int total_waiting_minute) {
+        this.total_waiting_minute = total_waiting_minute;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setPa_pos_x(int pa_pos_x) {
+        this.pa_pos_x = pa_pos_x;
+    }
+
+    public void setPa_pos_y(int pa_pos_y) {
+        this.pa_pos_y = pa_pos_y;
     }
 }
