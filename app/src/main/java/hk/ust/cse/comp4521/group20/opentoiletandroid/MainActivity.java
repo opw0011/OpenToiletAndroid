@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity
 
     public static final int LOGIN = 0;
 
-    private static final float SHAKE_FORCE = (float) 3.0;
-    private static final int SHAKE_TIMES = 10;
+    private static final float SHAKE_FORCE = (float) 1.25;
+    private static final int SHAKE_TIMES = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
