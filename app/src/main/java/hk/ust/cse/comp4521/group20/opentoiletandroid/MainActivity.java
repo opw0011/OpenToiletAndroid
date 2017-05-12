@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity
 
     public static final int LOGIN = 0;
 
+    private static final float SHAKE_FORCE = (float) 3.0;
+    private static final int SHAKE_TIMES = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,23 +106,24 @@ public class MainActivity extends AppCompatActivity
         // Set up a shake detector
         alertBuilder = new AlertDialog.Builder(this);
         ShakeDetector.create(this, () -> {
-                if(alertDialog == null || !alertDialog.isShowing()) {
-                    alertDialog = alertBuilder
-                            .setTitle(R.string.shake_alert_title)
-                            .setMessage(R.string.shake_alert_message)
-                            .setPositiveButton(R.string.shake_alert_send, (DialogInterface dialog, int which) -> {
-                                dialog.dismiss();
+            Log.d(TAG, "Shake Detected");
+            if(alertDialog == null || !alertDialog.isShowing()) {
+                alertDialog = alertBuilder
+                        .setTitle(R.string.shake_alert_title)
+                        .setMessage(R.string.shake_alert_message)
+                        .setPositiveButton(R.string.shake_alert_send, (DialogInterface dialog, int which) -> {
+                            dialog.dismiss();
 
-                                // Go to the send SOS activity
-                                Intent intent = new Intent(this, SendSOSActivity.class);
-                                startActivity(intent);
-                            })
-                            .setNegativeButton(R.string.shake_alert_cancel, (DialogInterface dialog, int which) -> dialog.dismiss())
-                            .show();
-                }
+                            // Go to the send SOS activity
+                            Intent intent = new Intent(this, SendSOSActivity.class);
+                            startActivity(intent);
+                        })
+                        .setNegativeButton(R.string.shake_alert_cancel, (DialogInterface dialog, int which) -> dialog.dismiss())
+                        .show();
+            }
         });
 
-        ShakeDetector.updateConfiguration((float)3.0, 8);
+        ShakeDetector.updateConfiguration(SHAKE_FORCE, SHAKE_TIMES);
     }
 
     @Override
