@@ -1,7 +1,9 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -93,6 +95,11 @@ public class ToiletListFragment extends Fragment {
             }
         });
 
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Boolean accessiblePref = sharedPref.getBoolean("accessible_switch", false);
+        int genderPref = Integer.parseInt(sharedPref.getString("gender_list", "-1"));
+
         // display data to the user
         mAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, mRef) {
             @Override
@@ -107,6 +114,8 @@ public class ToiletListFragment extends Fragment {
                 // create search string
                 String content = getToiletContentString(toilet);
                 toiletStrings.put(toiletViewHolder, content);
+
+                hideToiletsAsPref(toiletViewHolder, toilet, accessiblePref, genderPref);
             }
         };
         mRecyclerView.setAdapter(mAdapter);
@@ -194,6 +203,19 @@ public class ToiletListFragment extends Fragment {
         return strBdr.toString().trim();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Boolean accessiblePref = sharedPref.getBoolean("accessible_switch", false);
+        int genderPref = Integer.parseInt(sharedPref.getString("gender_list", "-1"));
+
+        for (Map.Entry<ToiletViewHolder, String> e : toiletStrings.entrySet()) {
+            ToiletViewHolder view = e.getKey();
+            hideToiletsAsPref(view, view.getToilet(), accessiblePref, genderPref);
+        }
+    }
+
     /**
      * Create concatenated prefix string
      * e.g.
@@ -210,4 +232,12 @@ public class ToiletListFragment extends Fragment {
         return stringBuilder.toString();
     }
 
+    private void hideToiletsAsPref (ToiletViewHolder toiletViewHolder, Toilet toilet, boolean accessiblePref, int genderPref) {
+        boolean check;
+        if (accessiblePref && genderPref != -1) check = toilet.isHas_accessible_toilet() && ((genderPref == 0) ? !toilet.getGender().equals(Toilet.Gender.M) : !toilet.getGender().equals(Toilet.Gender.F));
+        else if (accessiblePref) check = toilet.isHas_accessible_toilet();
+        else check = genderPref == -1 || ((genderPref == 0) ? !toilet.getGender().equals(Toilet.Gender.M) : !toilet.getGender().equals(Toilet.Gender.F));
+        if (check) toiletViewHolder.show();
+        else toiletViewHolder.hide();
+    }
 }
