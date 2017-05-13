@@ -9,9 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
@@ -42,11 +47,29 @@ public class SOSListFragment extends Fragment {
 
         // get data from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("sos_items");
+        // filter only the active sos request
+        Query queryRef = mRef.orderByChild("is_active").equalTo(true);
 
-        mAdapter = new FirebaseRecyclerAdapter<SOS, SOSViewHolder>(SOS.class, R.layout.sos_list_item, SOSViewHolder.class, mRef) {
+        mAdapter = new FirebaseRecyclerAdapter<SOS, SOSViewHolder>(SOS.class, R.layout.sos_list_item, SOSViewHolder.class, queryRef) {
             @Override
             protected void populateViewHolder(SOSViewHolder viewHolder, SOS model, int position) {
+                viewHolder.setTextViewTitle(model.getTitle());
+                viewHolder.setTextViewMessage(model.getMessage());
 
+                // Retrieve toilet detail using toilet id
+                // http://stackoverflow.com/questions/36235919/how-to-use-a-firebaserecycleradapter-with-a-dynamic-reference-in-android
+                String toiletID = model.getToilet_id();
+                FirebaseDatabase.getInstance().getReference("toilet_items").child(toiletID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String toiletName = dataSnapshot.child("name").getValue(String.class);
+                        viewHolder.setTextViewToiletName(toiletName);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
             }
         };
         mRecyclerView.setAdapter(mAdapter);
