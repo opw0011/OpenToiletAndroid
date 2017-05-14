@@ -43,7 +43,7 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder{
 
     public void setImageView (String ImageURL) {
         Picasso.with(context)
-            .load(ImageURL).into(imageView);
+            .load(ImageURL).resize(48, 48).into(imageView);
         imageView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ImageActivity.class);
             intent.putExtra("ImageURL", ImageURL);

@@ -21,9 +21,21 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.ortiz.touch.TouchImageView
+    <RelativeLayout
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:background="@android:color/background_dark" />
+        android:background="@android:color/background_dark"
+        android:gravity="center">
+
+        <com.ortiz.touch.TouchImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 </android.support.design.widget.CoordinatorLayout>
