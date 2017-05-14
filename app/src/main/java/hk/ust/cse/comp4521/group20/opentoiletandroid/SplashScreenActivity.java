@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class SplashScreenActivity extends AppCompatActivity {
 
     private static final int SPLASH_SCREEN_DISPLAY_LENGTH = 3000;
@@ -24,6 +27,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         // set Content
         setContentView(R.layout.activity_splash_screen);
+
+        // Persist toilet information
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items");
+        mRef.keepSynced(true);
 
         // Runnable to start the main activity
         Runnable startMainActivityRunnable = new Runnable() {
