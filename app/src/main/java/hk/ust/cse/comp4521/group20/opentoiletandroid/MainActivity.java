@@ -175,7 +175,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_bookmark) {
 
         } else if (id == R.id.nav_alarm) {
-
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new SOSListFragment());
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_account) {
             if (auth.getCurrentUser() != null) {
                 AuthUI.getInstance()
@@ -214,6 +216,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Retrieve results from log in screen
@@ -291,9 +294,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume");
         super.onResume();
         ShakeDetector.start();
+        
+        // Check whether the user is logged in
+        FirebaseUser user = auth.getCurrentUser();
+        setHeader(user);
+        if(user != null) {
+            // if yes, set the menu and the header
+            navigationView.getMenu().findItem(R.id.nav_account).setTitle(R.string.nav_account_logout);
+        }
+
     }
 
     @Override

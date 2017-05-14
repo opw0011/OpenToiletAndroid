@@ -69,4 +69,8 @@ public class ToiletViewHolder extends RecyclerView.ViewHolder implements View.On
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         itemView.setLayoutParams(params);
     }
+
+    public Toilet getToilet() {
+        return toilet;
+    }
 }

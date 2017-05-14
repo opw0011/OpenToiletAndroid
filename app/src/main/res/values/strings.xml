@@ -12,21 +12,20 @@
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
+    <string name="pref_title_accessible">Accessible facilities only</string>
+    <string name="pref_description_accessible">Only shows accessible facilities in toilet search
     </string>
 
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
+    <string name="pref_title_gender">Show toilet for</string>
+    <string-array name="pref_gender_list_titles">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Both Genders</item>
     </string-array>
-    <string-array name="pref_example_list_values">
+    <string-array name="pref_gender_list_values">
         <item>1</item>
         <item>0</item>
         <item>-1</item>
@@ -98,11 +97,11 @@
     <string name="login_no_internet_connection">Please connect to the Internet before continue.</string>
     <string name="login_unknown_error">Unknown error occurred. Please try again later.</string>
     <string name="logout_successful">Logout successful.</string>
+    <string name="login_tips">Please login before writing an review.</string>
     <string name="title_activity_send_sos">Send SOS</string>
 
     <string name="shake_alert_title">Send SOS?</string>
     <string name="shake_alert_message">You can ask for help by shaking the device if you encounter some difficult situation in toilet. Do you wish to send a help message?</string>
     <string name="shake_alert_send">Send</string>
     <string name="shake_alert_cancel">Cancel</string>
-
 </resources>

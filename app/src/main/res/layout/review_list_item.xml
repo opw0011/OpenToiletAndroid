@@ -9,11 +9,11 @@
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/ivToiletImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:scaleType="center"
+            android:scaleType="fitCenter"
             app:srcCompat="@mipmap/ic_launcher" />
         <LinearLayout
             android:layout_width="wrap_content"
