@@ -321,4 +321,5 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onDestroy");
         super.onDestroy();
         ShakeDetector.destroy();
+    }
 }
