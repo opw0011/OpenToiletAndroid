@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.firebase.ui.database.FirebaseIndexRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +18,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
 
 
 /**
@@ -48,7 +46,7 @@ public class SOSListFragment extends Fragment {
         // get data from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("sos_items");
         // filter only the active sos request
-        Query queryRef = mRef.orderByChild("is_active").equalTo(true);
+        Query queryRef = mRef.orderByChild("active").equalTo(true);
 
         mAdapter = new FirebaseRecyclerAdapter<SOS, SOSViewHolder>(SOS.class, R.layout.sos_list_item, SOSViewHolder.class, queryRef) {
             @Override

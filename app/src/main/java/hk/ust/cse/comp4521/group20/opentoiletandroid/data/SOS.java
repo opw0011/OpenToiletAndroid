@@ -1,7 +1,5 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid.data;
 
-import java.util.Date;
-
 /**
  * Created by opw on 12/5/2017.
  */
@@ -11,6 +9,7 @@ public class SOS {
     private String message;
     private String created_at;
     private String title;
+    private boolean active;
 
     public SOS() {}
 
@@ -19,6 +18,15 @@ public class SOS {
         this.message = message;
         this.created_at = created_at;
         this.title = title;
+        this.active = true;
+    }
+
+    public SOS(String toilet_id, String message, String created_at, String title, boolean active) {
+        this.toilet_id = toilet_id;
+        this.message = message;
+        this.created_at = created_at;
+        this.title = title;
+        this.active = active;
     }
 
     public String getToilet_id() {
@@ -51,5 +59,13 @@ public class SOS {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public boolean is_active() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
