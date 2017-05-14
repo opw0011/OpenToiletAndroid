@@ -45,6 +45,10 @@
             android:name=".ImageActivity"
             android:parentActivityName=".ToiletDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SendSOSActivity"
+            android:label="@string/title_activity_send_sos"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

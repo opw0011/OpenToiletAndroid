@@ -1,5 +1,6 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,6 +26,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
+import com.github.tbouron.shakedetector.library.ShakeDetector;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private NavigationView navigationView;
 
+    private AlertDialog alertDialog;
+    private AlertDialog.Builder alertBuilder;
+
     private SimpleDraweeView profilePic;
     private TextView profileEmail;
     private TextView profileName;
@@ -45,6 +51,9 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth auth;
 
     public static final int LOGIN = 0;
+
+    private static final float SHAKE_FORCE = (float) 1.25;
+    private static final int SHAKE_TIMES = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +95,6 @@ public class MainActivity extends AppCompatActivity
         profileEmail = (TextView) header.findViewById(R.id.profile_email);
         profileName = (TextView) header.findViewById(R.id.profile_name);
 
-
         // Check whether the user is logged in
         FirebaseUser user = auth.getCurrentUser();
         setHeader(user);
@@ -94,6 +102,28 @@ public class MainActivity extends AppCompatActivity
             // if yes, set the menu and the header
             navigationView.getMenu().findItem(R.id.nav_account).setTitle(R.string.nav_account_logout);
         }
+
+        // Set up a shake detector
+        alertBuilder = new AlertDialog.Builder(this);
+        ShakeDetector.create(this, () -> {
+            Log.d(TAG, "Shake Detected");
+            if(alertDialog == null || !alertDialog.isShowing()) {
+                alertDialog = alertBuilder
+                        .setTitle(R.string.shake_alert_title)
+                        .setMessage(R.string.shake_alert_message)
+                        .setPositiveButton(R.string.shake_alert_send, (DialogInterface dialog, int which) -> {
+                            dialog.dismiss();
+
+                            // Go to the send SOS activity
+                            Intent intent = new Intent(this, SendSOSActivity.class);
+                            startActivity(intent);
+                        })
+                        .setNegativeButton(R.string.shake_alert_cancel, (DialogInterface dialog, int which) -> dialog.dismiss())
+                        .show();
+            }
+        });
+
+        ShakeDetector.updateConfiguration(SHAKE_FORCE, SHAKE_TIMES);
     }
 
     @Override
@@ -265,6 +295,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        ShakeDetector.start();
+        
         // Check whether the user is logged in
         FirebaseUser user = auth.getCurrentUser();
         setHeader(user);
@@ -272,5 +304,21 @@ public class MainActivity extends AppCompatActivity
             // if yes, set the menu and the header
             navigationView.getMenu().findItem(R.id.nav_account).setTitle(R.string.nav_account_logout);
         }
+
     }
+
+    @Override
+    protected void onStop() {
+        if(alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+        super.onStop();
+        ShakeDetector.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy");
+        super.onDestroy();
+        ShakeDetector.destroy();
 }
