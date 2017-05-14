@@ -1,10 +1,15 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
 
@@ -25,10 +32,10 @@ import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
  */
 public class SOSListFragment extends Fragment {
 
+    private static final String TAG = "SOSListFragment";
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView.Adapter mAdapter;
-
 
     public SOSListFragment() {
         // Required empty public constructor
@@ -66,11 +73,28 @@ public class SOSListFragment extends Fragment {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
+                        Log.d(TAG, databaseError.getDetails());
                     }
                 });
             }
         };
         mRecyclerView.setAdapter(mAdapter);
+
+        // Floating button
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_sos);
+        Drawable icon = new IconicsDrawable(view.getContext())
+                .icon(GoogleMaterial.Icon.gmd_add_alert)
+                .color(Color.WHITE)
+                .sizeDp(24);
+        fab.setImageDrawable(icon);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+            // TODO: open call sos activity
+        });
 
         return view;
     }

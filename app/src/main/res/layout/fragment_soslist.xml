@@ -1,14 +1,23 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.SOSListFragment">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_sos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_medium"
+        android:clickable="true"
+        android:layout_gravity="end|bottom"
+        app:srcCompat="@drawable/ic_notifications_black_24dp" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_SOSList"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
 
