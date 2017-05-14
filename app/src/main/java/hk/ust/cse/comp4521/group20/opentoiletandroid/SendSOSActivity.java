@@ -2,11 +2,11 @@ package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
@@ -17,13 +17,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
 
 public class SendSOSActivity extends AppCompatActivity {
 
-    AutoCompleteTextView location;
-    AutoCompleteTextView title;
-    EditText message;
+    private AutoCompleteTextView location;
+    private AutoCompleteTextView title;
+    private EditText message;
 
+    protected ArrayAdapter<Toilet> locationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,14 @@ public class SendSOSActivity extends AppCompatActivity {
         message = (EditText) findViewById(R.id.input_sos_message);
 
 
+        // Set common titles for users to choose
+        ArrayAdapter adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line,
+                getResources().getStringArray(R.array.sos_common_title_values));
+        title.setAdapter(adapter);
+
+        // TODO: Allow the user to choose a toilet instead of typing it directly
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,8 +67,6 @@ public class SendSOSActivity extends AppCompatActivity {
                 SOS sos = new SOS(sosLocation, sosMessage, formattedDate, sosTitle);
                 DatabaseReference mSOSRef = FirebaseDatabase.getInstance().getReference("sos_items");
                 mSOSRef.push().setValue(sos);
-
-                Snackbar.make(view, "SOS Sent", Snackbar.LENGTH_SHORT);
 
                 onBackPressed();
             }

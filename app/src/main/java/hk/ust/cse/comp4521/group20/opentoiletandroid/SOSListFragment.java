@@ -46,7 +46,7 @@ public class SOSListFragment extends Fragment {
         // get data from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("sos_items");
         // filter only the active sos request
-        Query queryRef = mRef.orderByChild("active").equalTo(true);
+        Query queryRef = mRef.orderByChild("_active").equalTo(true);
 
         mAdapter = new FirebaseRecyclerAdapter<SOS, SOSViewHolder>(SOS.class, R.layout.sos_list_item, SOSViewHolder.class, queryRef) {
             @Override

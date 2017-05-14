@@ -98,7 +98,14 @@
     <string name="login_unknown_error">Unknown error occurred. Please try again later.</string>
     <string name="logout_successful">Logout successful.</string>
     <string name="login_tips">Please login before writing an review.</string>
+
     <string name="title_activity_send_sos">Send SOS</string>
+    <string-array name="sos_common_title_values">
+        <item>Feeling unwell</item>
+        <item>No toilet paper</item>
+        <item>Locked in toilet</item>
+        <item>Need help to leave toilet</item>
+    </string-array>
 
     <string name="shake_alert_title">Send SOS?</string>
     <string name="shake_alert_message">You can ask for help by shaking the device if you encounter some difficult situation in toilet. Do you wish to send a help message?</string>

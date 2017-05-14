@@ -9,7 +9,7 @@ public class SOS {
     private String message;
     private String created_at;
     private String title;
-    private boolean active;
+    private boolean is_active;
 
     public SOS() {}
 
@@ -18,7 +18,7 @@ public class SOS {
         this.message = message;
         this.created_at = created_at;
         this.title = title;
-        this.active = true;
+        this.is_active = true;
     }
 
     public SOS(String toilet_id, String message, String created_at, String title, boolean active) {
@@ -26,7 +26,7 @@ public class SOS {
         this.message = message;
         this.created_at = created_at;
         this.title = title;
-        this.active = active;
+        this.is_active = active;
     }
 
     public String getToilet_id() {
@@ -62,10 +62,10 @@ public class SOS {
     }
 
     public boolean is_active() {
-        return active;
+        return is_active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setIs_active(boolean is_active) {
+        this.is_active = is_active;
     }
 }
