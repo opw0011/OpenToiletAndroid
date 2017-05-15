@@ -2,6 +2,7 @@ package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -16,7 +17,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
@@ -24,7 +24,6 @@ import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +33,8 @@ import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
@@ -50,10 +51,14 @@ public class ToiletDetailActivity extends AppCompatActivity {
     private FloatingActionButton fabWriteReview;
     private DatabaseReference mReviewRef;
     private DatabaseReference mToiletRef;
+    private SharedPreferences bookmarkPreference;
+
     private static String toiletId;
     private static Toilet mToilet;
 
     public static final int LOGIN = 0;
+
+    public static final String BOOKMARK_FILE = "BookmarkFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,13 +125,33 @@ public class ToiletDetailActivity extends AppCompatActivity {
         };
         mRecyclerView.setAdapter(mAdapter);
 
+        bookmarkPreference = getSharedPreferences(BOOKMARK_FILE,0);
+
+        // Switch the button to minus when the toilet is added to bookmark
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Bookmark toilet into local storage
-                Snackbar.make(view, "Successfully bookmarked the toilet.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Set<String> bookmarks = bookmarkPreference.getStringSet("bookmarks", new HashSet<>());
+
+                SharedPreferences.Editor editor = bookmarkPreference.edit();
+                if(bookmarks.contains(toiletId)){
+                    bookmarks.remove(toiletId);
+
+                } else {
+                    bookmarks.add(toiletId);
+
+                }
+                editor.putStringSet("bookmarks", bookmarks);
+                editor.commit();
+
+                if(bookmarkPreference.getStringSet("bookmarks", new HashSet<>()).contains(toiletId)) {
+                    Snackbar.make(view, "Successfully bookmarked the toilet.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    Snackbar.make(view, "Successfully removed the toilet.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             }
         });
 

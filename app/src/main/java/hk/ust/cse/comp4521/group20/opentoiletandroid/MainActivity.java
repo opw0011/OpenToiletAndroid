@@ -163,7 +163,9 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container, new ToiletListFragment());
             fragmentTransaction.commit();
         } else if (id == R.id.nav_bookmark) {
-
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new BookmarkListFragment());
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_alarm) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, new SOSListFragment());
