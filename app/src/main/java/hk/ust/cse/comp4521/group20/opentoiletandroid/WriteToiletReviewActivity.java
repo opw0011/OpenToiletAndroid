@@ -77,6 +77,7 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.button2);
 
         button.setOnClickListener((View v) -> {
+            button.setEnabled(false);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
             String formattedDate = sdf.format(new Date());
 
@@ -105,6 +106,7 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.login_tips), Toast.LENGTH_SHORT);
                 toast.show();
+                button.setEnabled(true);
             }
 
         });

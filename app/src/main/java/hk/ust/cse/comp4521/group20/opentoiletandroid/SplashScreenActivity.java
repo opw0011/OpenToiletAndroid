@@ -29,7 +29,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         // Persist toilet information
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items");
         mRef.keepSynced(true);
 
