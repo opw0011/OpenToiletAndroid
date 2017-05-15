@@ -111,4 +111,6 @@
     <string name="shake_alert_message">You can ask for help by shaking the device if you encounter some difficult situation in toilet. Do you wish to send a help message?</string>
     <string name="shake_alert_send">Send</string>
     <string name="shake_alert_cancel">Cancel</string>
+    <string name="bookmark_added">Successfully bookmarked the toilet.</string>
+    <string name="bookmark_removed">Successfully removed the toilet.</string>
 </resources>
