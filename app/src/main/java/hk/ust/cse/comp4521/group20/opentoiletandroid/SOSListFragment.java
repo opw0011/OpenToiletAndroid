@@ -60,6 +60,7 @@ public class SOSListFragment extends Fragment {
             protected void populateViewHolder(SOSViewHolder viewHolder, SOS model, int position) {
                 viewHolder.setTextViewTitle(model.getTitle());
                 viewHolder.setTextViewMessage(model.getMessage());
+                viewHolder.setTextViewTimestamp(model.getCreated_at());
 
                 // Retrieve toilet detail using toilet id
                 // http://stackoverflow.com/questions/36235919/how-to-use-a-firebaserecycleradapter-with-a-dynamic-reference-in-android

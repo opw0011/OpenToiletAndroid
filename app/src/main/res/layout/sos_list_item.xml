@@ -11,11 +11,23 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/tv_sos_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_time_icon"
+            android:padding="@dimen/spacing_medium"
+            android:text="Timestamp"
+            android:textSize="@dimen/text_small" />
+
+        <TextView
             android:id="@+id/tv_sos_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tv_sos_timestamp"
             android:padding="@dimen/spacing_medium"
-            android:text="Item 1" />
+            android:text="Item 1"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_sos_message"
@@ -35,8 +47,8 @@
             android:text="Item 2" />
 
         <Button
-            style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/btn_sos_help"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -44,5 +56,4 @@
 
 
     </RelativeLayout>
-
 </android.support.v7.widget.CardView>
