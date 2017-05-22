@@ -4,14 +4,16 @@
 
 ## To-Do List
 **UI Design**
-- [x] Navigation drawer
-- [x] Toilet list fragment
-- [ ] Toilet detail fragment
-- [ ] Toilet list search bar
-- [ ] Login and signup activity
+- [x] ~~Navigation drawer~~
+- [x] ~~Toilet list fragment~~
+- [x] ~~Toilet detail fragment~~
+- [x] ~~Login and signup activity~~
+- [ ] Toilet list search fragment (lift, floor, gender and otherr facilities)
+
 
 **Features**
-- [ ] User signup & login
-- [ ] Give toilet rating
-- [ ] Write toilet review
-- [ ] Save app preference
+- [x] ~~User signup & login~~
+- [x] ~~Give toilet rating~~
+- [x] ~~Write toilet review~~
+- [x] ~~Save app preference~~
+- [ ] SOS Request + Response 
