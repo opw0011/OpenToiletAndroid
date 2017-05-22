@@ -19,7 +19,7 @@
 - [x] ~~Write toilet review~~
 - [x] ~~Save app preference~~
 - [ ] SOS Request + Response 
-- [ ] Search using Firebase Query instead of local serach
+- [ ] Search using Firebase Query instead of local search
 
 **Web Admin Platform**
 - [ ] List toilet data
