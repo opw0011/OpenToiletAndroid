@@ -4,24 +4,23 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.Toast;
-import com.google.firebase.auth.FirebaseAuth;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
@@ -91,6 +90,10 @@ public class SendSOSActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (title.getText().toString().trim().isEmpty()){
+                    title.setError(getString(R.string.sos_empty_title));
+                    return;
+                }
                 if (firebaseAuth.getCurrentUser() != null ) {
                     fab.setEnabled(false);
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
