@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,6 +27,8 @@ public class SendSOSActivity extends AppCompatActivity {
     private AutoCompleteTextView title;
     private EditText message;
 
+    protected FirebaseAuth firebaseAuth;
+
     protected ArrayAdapter<Toilet> locationAdapter;
 
     @Override
@@ -37,6 +41,9 @@ public class SendSOSActivity extends AppCompatActivity {
         // Enable back to home navigation
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // Get reference to FirebaseAuth
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // Bind the UI Elements
         location = (AutoCompleteTextView) findViewById(R.id.input_sos_location);
@@ -56,19 +63,26 @@ public class SendSOSActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fab.setEnabled(false);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-                String formattedDate = sdf.format(new Date());
+                if (firebaseAuth.getCurrentUser() != null ) {
+                    fab.setEnabled(false);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+                    String formattedDate = sdf.format(new Date());
 
-                String sosLocation = location.getText().toString();
-                String sosMessage = message.getText().toString();
-                String sosTitle = title.getText().toString();
+                    String authorId = firebaseAuth.getCurrentUser().getUid();
+                    String sosLocation = location.getText().toString();
+                    String sosMessage = message.getText().toString();
+                    String sosTitle = title.getText().toString();
 
-                SOS sos = new SOS(sosLocation, sosMessage, formattedDate, sosTitle);
-                DatabaseReference mSOSRef = FirebaseDatabase.getInstance().getReference("sos_items");
-                mSOSRef.push().setValue(sos);
+                    SOS sos = new SOS(sosLocation, authorId, sosMessage, formattedDate, sosTitle);
+                    DatabaseReference mSOSRef = FirebaseDatabase.getInstance().getReference("sos_items");
+                    mSOSRef.push().setValue(sos);
 
-                onBackPressed();
+                    onBackPressed();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), R.string.sos_login_tips, Toast.LENGTH_SHORT);
+                    toast.show();
+                    fab.setEnabled(true);
+                }
             }
         });
     }

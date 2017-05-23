@@ -102,18 +102,30 @@ public class MainActivity extends AppCompatActivity
         ShakeDetector.create(this, () -> {
             Log.d(TAG, "Shake Detected");
             if(alertDialog == null || !alertDialog.isShowing()) {
-                alertDialog = alertBuilder
-                        .setTitle(R.string.shake_alert_title)
-                        .setMessage(R.string.shake_alert_message)
-                        .setPositiveButton(R.string.shake_alert_send, (DialogInterface dialog, int which) -> {
-                            dialog.dismiss();
+                if(auth.getCurrentUser() == null) {
+                    alertDialog = alertBuilder
+                            .setTitle(R.string.shake_alert_title_not_logged_in)
+                            .setMessage(R.string.shake_alert_message_not_logged_in)
+                            .setPositiveButton(R.string.shake_alert_login, (DialogInterface dialog, int which) -> {
+                                dialog.dismiss();
+                                startLoginActivity();
+                            })
+                            .setNegativeButton(R.string.shake_alert_cancel, (DialogInterface dialog, int which) -> dialog.dismiss())
+                            .show();
+                } else {
+                    alertDialog = alertBuilder
+                            .setTitle(R.string.shake_alert_title)
+                            .setMessage(R.string.shake_alert_message)
+                            .setPositiveButton(R.string.shake_alert_send, (DialogInterface dialog, int which) -> {
+                                dialog.dismiss();
 
-                            // Go to the send SOS activity
-                            Intent intent = new Intent(this, SendSOSActivity.class);
-                            startActivity(intent);
-                        })
-                        .setNegativeButton(R.string.shake_alert_cancel, (DialogInterface dialog, int which) -> dialog.dismiss())
-                        .show();
+                                // Go to the send SOS activity
+                                Intent intent = new Intent(this, SendSOSActivity.class);
+                                startActivity(intent);
+                            })
+                            .setNegativeButton(R.string.shake_alert_cancel, (DialogInterface dialog, int which) -> dialog.dismiss())
+                            .show();
+                }
             }
         });
 
@@ -191,16 +203,7 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
         } else {
-                startActivityForResult(
-                        AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .setIsSmartLockEnabled(false)
-                                .setTheme(R.style.AppTheme)
-                                .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
-                                .build(),
-                        0);
+            startLoginActivity();
             }
         } else if (id == R.id.nav_setting) {
             Intent intent = new Intent(this, SettingsActivity.class);
@@ -317,5 +320,18 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onDestroy");
         super.onDestroy();
         ShakeDetector.destroy();
+    }
+
+    void startLoginActivity() {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
+                        .setTheme(R.style.AppTheme)
+                        .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                        .build(),
+                0);
     }
 }
