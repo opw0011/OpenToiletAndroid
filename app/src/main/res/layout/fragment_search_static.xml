@@ -44,18 +44,25 @@
                     android:inputType="number" />
             </android.support.design.widget.TextInputLayout>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gender: "
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"/>
-            <Spinner
-                android:id="@+id/genderSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-            </Spinner>
+                android:orientation="vertical"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gender: "
+                    android:layout_marginStart="5dp"/>
+
+                <Spinner
+                    android:id="@+id/genderSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"></Spinner>
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -72,40 +79,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_restaurant_menu" />
+            <CheckBox android:id="@+id/checkbox_accessible_toilet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/accessible_toilet_text"/>
 
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_directions_subway" />
+            <CheckBox android:id="@+id/checkbox_changing_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/changing_room_text"/>
 
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_restaurant_menu" />
-
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_directions_subway" />
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_restaurant_menu" />
-
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_directions_subway" />
+            <CheckBox android:id="@+id/checkbox_shower"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shower_text"/>
 
         </LinearLayout>
 

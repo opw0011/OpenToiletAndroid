@@ -47,6 +47,9 @@ public class ToiletListFragment extends Fragment {
     private Map<ToiletViewHolder, String> toiletStrings = new HashMap<>();
     private Query query;
     private int queryDoneOnFB = -1;
+    private String searchString = "";
+
+    private SearchStaticFragment searchStaticFragment;
 
     public ToiletListFragment() {
         // Required empty public constructor
@@ -62,29 +65,6 @@ public class ToiletListFragment extends Fragment {
         // get data from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items_test");
         query = mRef;
-        final SearchViewLayout searchViewLayout = (SearchViewLayout) getActivity().findViewById(R.id.search_view_container);
-        if (searchViewLayout.getVisibility() == View.GONE) searchViewLayout.setVisibility(View.VISIBLE);
-        searchViewLayout.handleToolbarAnimation(((MainActivity)getActivity()).getToolbar());
-        SearchStaticFragment searchStaticFragment = new SearchStaticFragment();
-        searchViewLayout.setExpandedContentFragment(getActivity(), searchStaticFragment);
-        searchViewLayout.setSearchListener(new SearchViewLayout.SearchListener() {
-            @Override
-            public void onFinished(String searchKeyword) {
-                searchViewLayout.collapse();
-                if (searchStaticFragment.getFloor().length() != 0) {
-                    query = mRef.orderByChild("floor").equalTo(searchStaticFragment.getFloor());
-                    queryDoneOnFB = 0;
-                } else if (searchStaticFragment.getLiftNumber() != -1) {
-                    query = mRef.orderByChild("lift/" + searchStaticFragment.getLiftNumber()).equalTo(true);
-                    queryDoneOnFB = 1;
-                } else if (searchStaticFragment.getGender() != SearchStaticFragment.Gender.Both) {
-                    query = mRef.orderByChild("gender").equalTo(searchStaticFragment.getGender().toString());
-                    queryDoneOnFB = 2;
-                }
-                setAdapter();
-            }
-        });
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.lvToilet);
 
         // use this setting to improve performance if you know that changes
@@ -95,45 +75,76 @@ public class ToiletListFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        // display data to the user
+        setAdapter();
+        final SearchViewLayout searchViewLayout = (SearchViewLayout) getActivity().findViewById(R.id.search_view_container);
+        if (searchViewLayout.getVisibility() == View.GONE) searchViewLayout.setVisibility(View.VISIBLE);
+        searchViewLayout.handleToolbarAnimation(((MainActivity)getActivity()).getToolbar());
+        searchStaticFragment = new SearchStaticFragment();
+        searchViewLayout.setExpandedContentFragment(getActivity(), searchStaticFragment);
+        searchViewLayout.setSearchListener(new SearchViewLayout.SearchListener() {
+            @Override
+            public void onFinished(String searchKeyword) {
+                searchViewLayout.collapse();
+                searchString = searchKeyword;
+                if (searchStaticFragment.getFloor().length() != 0) {
+                    query = mRef.orderByChild("floor").equalTo(searchStaticFragment.getFloor());
+                    queryDoneOnFB = 0;
+                } else if (searchStaticFragment.getLiftNumber() != -1) {
+                    query = mRef.orderByChild("lift/" + searchStaticFragment.getLiftNumber()).equalTo(true);
+                    queryDoneOnFB = 1;
+                } else if (searchStaticFragment.needAccessible()) {
+                    query = mRef.orderByChild("has_accessible_toilet").equalTo(true);
+                    queryDoneOnFB = 2;
+                } else if (searchStaticFragment.needChanging()) {
+                    query = mRef.orderByChild("has_changing_room").equalTo(true);
+                    queryDoneOnFB = 3;
+                } else if (searchStaticFragment.needShower()) {
+                    query = mRef.orderByChild("has_shower").equalTo(true);
+                    queryDoneOnFB = 4;
+                } else {
+                    query = mRef;
+                    queryDoneOnFB = 5;
+                }
+
+                setAdapter();
+            }
+        });
+
+
+
         // show loading screen
-//        LoadingScreen loadingScreen = new LoadingScreen();
-//        getActivity().getFragmentManager().beginTransaction()
-//                .add(R.id.drawer_layout, loadingScreen).commit();
+        LoadingScreen loadingScreen = new LoadingScreen();
+        getActivity().getFragmentManager().beginTransaction()
+                .add(R.id.drawer_layout, loadingScreen).commit();
 
 
         // data ready event listener
-//        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists() && getActivity() != null) {
-//                    // remove loading screen when data is ready
-//                    getActivity().getFragmentManager().beginTransaction()
-//                            .remove(loadingScreen).commit();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // show error message
-//                Snackbar.make(container, "Database error", 3000)
-//                        .setAction("OK", v -> getActivity().getFragmentManager().beginTransaction()
-//                                .remove(loadingScreen).commit())
-//                        .show();
-//            }
-//        });
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && getActivity() != null) {
+                    // remove loading screen when data is ready
+                    getActivity().getFragmentManager().beginTransaction()
+                            .remove(loadingScreen).commit();
+                }
+            }
 
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        Boolean accessiblePref = sharedPref.getBoolean("accessible_switch", false);
-        int genderPref = Integer.parseInt(sharedPref.getString("gender_list", "-1"));
-
-        // display data to the user
-        setAdapter();
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // show error message
+                Snackbar.make(container, "Database error", 3000)
+                        .setAction("OK", v -> getActivity().getFragmentManager().beginTransaction()
+                                .remove(loadingScreen).commit())
+                        .show();
+            }
+        });
 
         return view;
     }
 
     private void setAdapter() {
+        toiletStrings.clear();
         mAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, query) {
             @Override
             protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {
@@ -144,11 +155,59 @@ public class ToiletListFragment extends Fragment {
                 toiletViewHolder.setToiletId(getRef(position).getKey());
                 toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (double) toilet.getTotal_score() / toilet.getCount()));
 
-//                // create search string
-//                String content = getToiletContentString(toilet);
-//                toiletStrings.put(toiletViewHolder, content);
+                if (toilet.getGender() != Toilet.Gender.Both && toilet.getGender() != searchStaticFragment.getGender()) {
+                    toiletViewHolder.hide();
+                    return;
+                }
 
-//                hideToiletsAsPref(toiletViewHolder, toilet, accessiblePref, genderPref);
+                boolean show = false;
+                if (searchString.equals(" ") || searchString.length() == 0) {
+                    show = true;
+                } else {
+                    // normalize query string
+                    List<String> queryList = getNormalizedQueryStringList(searchString);
+                    for (String ss : queryList) {
+                        if (getToiletContentString(toilet).contains(ss)) {
+                            show = true;
+                            break;
+                        }
+                    }
+                }
+                if (show) {
+                    switch (queryDoneOnFB) {
+                        case 0:
+                            if (searchStaticFragment.getLiftNumber() != -1) {
+                                if (!toilet.getLift().contains(searchStaticFragment.getLiftNumber() + "")) {
+                                    toiletViewHolder.hide();
+                                    return;
+                                }
+                            }
+                        case 1:
+                            if (searchStaticFragment.needAccessible()) {
+                                if (!toilet.isHas_accessible_toilet()) {
+                                    toiletViewHolder.hide();
+                                    return;
+                                }
+                            }
+                        case 2:
+                            if (searchStaticFragment.needChanging()) {
+                                if (!toilet.isHas_changing_room()) {
+                                    toiletViewHolder.hide();
+                                    return;
+                                }
+                            }
+                        case 3:
+                            if (searchStaticFragment.needShower()) {
+                                if (!toilet.isHas_shower()) {
+                                    toiletViewHolder.hide();
+                                    return;
+                                }
+                            }
+                    }
+                    toiletViewHolder.show();
+                } else {
+                    toiletViewHolder.hide();
+                }
             }
         };
         mRecyclerView.setAdapter(mAdapter);
@@ -192,14 +251,8 @@ public class ToiletListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        Boolean accessiblePref = sharedPref.getBoolean("accessible_switch", false);
-        int genderPref = Integer.parseInt(sharedPref.getString("gender_list", "-1"));
-
-        for (Map.Entry<ToiletViewHolder, String> e : toiletStrings.entrySet()) {
-            ToiletViewHolder view = e.getKey();
-            hideToiletsAsPref(view, view.getToilet(), accessiblePref, genderPref);
-        }
+        final SearchViewLayout searchViewLayout = (SearchViewLayout) getActivity().findViewById(R.id.search_view_container);
+        if (searchViewLayout.getVisibility() == View.GONE) searchViewLayout.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -218,12 +271,4 @@ public class ToiletListFragment extends Fragment {
         return stringBuilder.toString();
     }
 
-    private void hideToiletsAsPref (ToiletViewHolder toiletViewHolder, Toilet toilet, boolean accessiblePref, int genderPref) {
-        boolean check;
-        if (accessiblePref && genderPref != -1) check = toilet.isHas_accessible_toilet() && ((genderPref == 0) ? !toilet.getGender().equals(Toilet.Gender.M) : !toilet.getGender().equals(Toilet.Gender.F));
-        else if (accessiblePref) check = toilet.isHas_accessible_toilet();
-        else check = genderPref == -1 || ((genderPref == 0) ? !toilet.getGender().equals(Toilet.Gender.M) : !toilet.getGender().equals(Toilet.Gender.F));
-        if (check) toiletViewHolder.show();
-        else toiletViewHolder.hide();
-    }
 }
