@@ -70,7 +70,7 @@ public class BookmarkListFragment extends Fragment {
                 .add(R.id.drawer_layout, loadingScreen).commit();
 
         // get data from Firebase
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items_test");
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items");
 
         // data ready event listener
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {

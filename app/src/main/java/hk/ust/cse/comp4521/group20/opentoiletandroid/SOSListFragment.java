@@ -82,7 +82,7 @@ public class SOSListFragment extends Fragment {
                         // Retrieve toilet detail using toilet id
                         // http://stackoverflow.com/questions/36235919/how-to-use-a-firebaserecycleradapter-with-a-dynamic-reference-in-android
                         String toiletID = model.getToilet_id();
-                        FirebaseDatabase.getInstance().getReference("toilet_items_test").child(toiletID).addListenerForSingleValueEvent(new ValueEventListener() {
+                        FirebaseDatabase.getInstance().getReference("toilet_items").child(toiletID).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 String toiletName = dataSnapshot.child("name").getValue(String.class);

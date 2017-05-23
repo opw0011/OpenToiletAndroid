@@ -63,7 +63,7 @@ public class ToiletListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_toilet_list, container, false);
         // get data from Firebase
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items_test");
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items");
         query = mRef;
         mRecyclerView = (RecyclerView) view.findViewById(R.id.lvToilet);
 
