@@ -1,7 +1,9 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,7 +73,7 @@ public class ToiletListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // display data to the user
-        setAdapter(false);
+        setAdapter(true);
         searchViewLayout = (SearchViewLayout) getActivity().findViewById(R.id.search_view_container);
         if (searchViewLayout.getVisibility() == View.GONE) searchViewLayout.setVisibility(View.VISIBLE);
         searchViewLayout.handleToolbarAnimation(((MainActivity)getActivity()).getToolbar());
@@ -102,14 +104,9 @@ public class ToiletListFragment extends Fragment {
                     queryDoneOnFB = 5;
                 }
 
-                setAdapter(true);
+                setAdapter(false);
             }
         });
-        return view;
-    }
-
-    private void setAdapter(boolean fromSearch) {
-        toiletStrings.clear();
         // show loading screen
         LoadingScreen loadingScreen = new LoadingScreen();
 
@@ -135,6 +132,12 @@ public class ToiletListFragment extends Fragment {
 //                        .show();
             }
         });
+        return view;
+    }
+
+    private void setAdapter(boolean isCreateView) {
+        toiletStrings.clear();
+
         mAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, query) {
             @Override
             protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {
@@ -144,7 +147,18 @@ public class ToiletListFragment extends Fragment {
                 toiletViewHolder.setToilet(toilet);
                 toiletViewHolder.setToiletId(getRef(position).getKey());
                 toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (double) toilet.getTotal_score() / toilet.getCount()));
-                if (!fromSearch) return;
+                if (isCreateView) {
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    Boolean accessiblePref = sharedPref.getBoolean("accessible_switch", false);
+                    int genderPref = Integer.parseInt(sharedPref.getString("gender_list", "0"));
+                    boolean check;
+                    if (accessiblePref && genderPref != 0) check = toilet.isHas_accessible_toilet() && ((genderPref == 1) ? toilet.getGender().equals(Toilet.Gender.M) : toilet.getGender().equals(Toilet.Gender.F));
+                    else if (accessiblePref) check = toilet.isHas_accessible_toilet();
+                    else check = genderPref == 0 || ((genderPref == 1) ? toilet.getGender().equals(Toilet.Gender.M) : toilet.getGender().equals(Toilet.Gender.F));
+                    if (check) toiletViewHolder.show();
+                    else toiletViewHolder.hide();
+                    return;
+                }
 
                 if (searchStaticFragment.getGender() != Toilet.Gender.Both && toilet.getGender() != searchStaticFragment.getGender()) {
                     toiletViewHolder.hide();
