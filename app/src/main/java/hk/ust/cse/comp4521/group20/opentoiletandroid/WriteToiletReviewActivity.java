@@ -184,7 +184,7 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
         DatabaseReference mReviewRef = FirebaseDatabase.getInstance().getReference("review_items/"+ finalToiletId);
         mReviewRef.push().setValue(review);
 
-        DatabaseReference mToiletRef = FirebaseDatabase.getInstance().getReference("toilet_items/"+ finalToiletId);
+        DatabaseReference mToiletRef = FirebaseDatabase.getInstance().getReference("toilet_items_test/"+ finalToiletId);
         mToiletRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {

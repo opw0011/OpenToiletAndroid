@@ -21,14 +21,14 @@
 
     <string name="pref_title_gender">Show toilet for</string>
     <string-array name="pref_gender_list_titles">
+        <item>Both</item>
         <item>Male</item>
         <item>Female</item>
-        <item>Both Genders</item>
     </string-array>
     <string-array name="pref_gender_list_values">
-        <item>1</item>
         <item>0</item>
-        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->
@@ -115,7 +115,9 @@
     <string name="shake_alert_send">Send</string>
     <string name="shake_alert_login">Login</string>
     <string name="shake_alert_cancel">Cancel</string>
-
+    <string name="accessible_toilet_text">{gmd_accessible} Accessible toilet:</string>
+    <string name="changing_room_text">{gmd_accessibility} Changing room:</string>
+    <string name="shower_text">{gmd_hot_tub} Shower:</string>
 
     <string name="sos_login_tips">Please login before sending an SOS message.</string>
     <string name="sos_empty_title">Title cannot be empty</string>

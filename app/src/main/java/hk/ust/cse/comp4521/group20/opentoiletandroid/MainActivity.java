@@ -170,12 +170,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        findViewById(R.id.search_view_container).setVisibility(View.GONE);
         if (id == R.id.nav_home) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, new MainFragment());
             fragmentTransaction.commit();
         } else if (id == R.id.nav_find_toilets) {
+            findViewById(R.id.search_view_container).setVisibility(View.VISIBLE);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, new ToiletListFragment());
             fragmentTransaction.commit();
@@ -323,6 +324,11 @@ public class MainActivity extends AppCompatActivity
         ShakeDetector.destroy();
     }
 
+
+    public Toolbar getToolbar() {
+        toolbar =  (Toolbar) findViewById(R.id.toolbar);
+        return toolbar;
+    }
     void startLoginActivity() {
         startActivityForResult(
                 AuthUI.getInstance()
