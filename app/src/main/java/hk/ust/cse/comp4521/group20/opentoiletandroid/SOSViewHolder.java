@@ -50,11 +50,7 @@ public class SOSViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setTextViewMessage(String message) {
-        if(message.trim().isEmpty()) {
-            textViewMessage.setVisibility(View.GONE);
-        } else {
             textViewMessage.setText(message);
-        }
     }
 
     public void setTextViewToiletName(String name) {
