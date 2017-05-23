@@ -58,4 +58,10 @@ public class SOSViewHolder extends RecyclerView.ViewHolder {
         }
 
     }
+
+    public void hide() {
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)itemView.getLayoutParams();
+        params.height = 0;
+        itemView.setLayoutParams(params);
+    }
 }
