@@ -106,4 +106,10 @@ public class SearchStaticFragment extends Fragment {
         genderSpinner.setSelection(genderPref);
         accessibleCheckBox.setChecked(accessiblePref);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadSettingsFromPref();
+    }
 }
