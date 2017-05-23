@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-;import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+
+import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
 
 
 /**
@@ -98,12 +97,6 @@ public class SearchStaticFragment extends Fragment {
 
     public boolean needShower() {
         return showerCheckBox.isChecked();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadSettingsFromPref();
     }
 
     private void loadSettingsFromPref() {
