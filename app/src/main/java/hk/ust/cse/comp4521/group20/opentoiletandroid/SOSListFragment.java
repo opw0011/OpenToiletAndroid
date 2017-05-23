@@ -70,9 +70,11 @@ public class SOSListFragment extends Fragment {
                 calendar.add(Calendar.HOUR, -2);
                 Date startingTime = calendar.getTime();
 
+                viewHolder.setSosId(getRef(position).getKey());
                 viewHolder.setTextViewTitle(model.getTitle());
                 viewHolder.setTextViewMessage(model.getMessage());
                 viewHolder.setTextViewTimestamp(model.getCreated_at());
+                viewHolder.setButtonSOSResolve(model.getAuthor());
 
                 try {
                     if (model.obtainCreatedAtDate().after(startingTime)) {
@@ -93,10 +95,9 @@ public class SOSListFragment extends Fragment {
                         });
                     } else {
                         this.getRef(position).removeValue();
-//                        viewHolder.hide();
                     }
                 } catch (ParseException e){
-                    viewHolder.hide();
+                    this.getRef(position).removeValue();
                 }
             }
         };
