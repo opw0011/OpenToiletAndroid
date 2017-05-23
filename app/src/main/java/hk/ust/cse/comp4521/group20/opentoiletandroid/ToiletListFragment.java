@@ -155,7 +155,7 @@ public class ToiletListFragment extends Fragment {
                 toiletViewHolder.setToiletId(getRef(position).getKey());
                 toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (double) toilet.getTotal_score() / toilet.getCount()));
 
-                if (toilet.getGender() != Toilet.Gender.Both && toilet.getGender() != searchStaticFragment.getGender()) {
+                if (searchStaticFragment.getGender() != Toilet.Gender.Both && toilet.getGender() != searchStaticFragment.getGender()) {
                     toiletViewHolder.hide();
                     return;
                 }
