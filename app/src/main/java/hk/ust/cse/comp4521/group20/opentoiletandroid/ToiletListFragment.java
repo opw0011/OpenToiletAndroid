@@ -50,6 +50,7 @@ public class ToiletListFragment extends Fragment {
     private String searchString = "";
 
     private SearchStaticFragment searchStaticFragment;
+    private SearchViewLayout searchViewLayout;
 
     public ToiletListFragment() {
         // Required empty public constructor
@@ -76,8 +77,8 @@ public class ToiletListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // display data to the user
-        setAdapter();
-        final SearchViewLayout searchViewLayout = (SearchViewLayout) getActivity().findViewById(R.id.search_view_container);
+        setAdapter(false);
+        searchViewLayout = (SearchViewLayout) getActivity().findViewById(R.id.search_view_container);
         if (searchViewLayout.getVisibility() == View.GONE) searchViewLayout.setVisibility(View.VISIBLE);
         searchViewLayout.handleToolbarAnimation(((MainActivity)getActivity()).getToolbar());
         searchStaticFragment = new SearchStaticFragment();
@@ -107,7 +108,7 @@ public class ToiletListFragment extends Fragment {
                     queryDoneOnFB = 5;
                 }
 
-                setAdapter();
+                setAdapter(true);
             }
         });
 
@@ -143,7 +144,7 @@ public class ToiletListFragment extends Fragment {
         return view;
     }
 
-    private void setAdapter() {
+    private void setAdapter(boolean fromQuery) {
         toiletStrings.clear();
         mAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, query) {
             @Override
@@ -154,7 +155,7 @@ public class ToiletListFragment extends Fragment {
                 toiletViewHolder.setToilet(toilet);
                 toiletViewHolder.setToiletId(getRef(position).getKey());
                 toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (double) toilet.getTotal_score() / toilet.getCount()));
-
+                if (!fromQuery) return;
                 if (searchStaticFragment.getGender() != Toilet.Gender.Both && toilet.getGender() != searchStaticFragment.getGender()) {
                     toiletViewHolder.hide();
                     return;
@@ -251,7 +252,6 @@ public class ToiletListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        final SearchViewLayout searchViewLayout = (SearchViewLayout) getActivity().findViewById(R.id.search_view_container);
         if (searchViewLayout.getVisibility() == View.GONE) searchViewLayout.setVisibility(View.VISIBLE);
     }
 

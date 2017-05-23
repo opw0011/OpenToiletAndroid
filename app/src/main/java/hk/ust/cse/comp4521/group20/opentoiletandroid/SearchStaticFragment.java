@@ -39,9 +39,6 @@ public class SearchStaticFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_static, container, false);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        Boolean accessiblePref = sharedPref.getBoolean("accessible_switch", false);
-        int genderPref = Integer.parseInt(sharedPref.getString("gender_list", "0"));
         floorText = (EditText) view.findViewById(R.id.tv_floor);
         liftText = (EditText) view.findViewById(R.id.tv_lift);
         genderSpinner = (Spinner) view.findViewById(R.id.genderSpinner);
@@ -70,11 +67,10 @@ public class SearchStaticFragment extends Fragment {
 
             }
         });
-        genderSpinner.setSelection(genderPref);
         accessibleCheckBox = (CheckBox) view.findViewById(R.id.checkbox_accessible_toilet);
-        accessibleCheckBox.setChecked(accessiblePref);
         changingCheckBox = (CheckBox) view.findViewById(R.id.checkbox_changing_room);
         showerCheckBox = (CheckBox) view.findViewById(R.id.checkbox_shower);
+        loadSettingsFromPref();
         return view;
     }
 
@@ -104,4 +100,17 @@ public class SearchStaticFragment extends Fragment {
         return showerCheckBox.isChecked();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadSettingsFromPref();
+    }
+
+    private void loadSettingsFromPref() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Boolean accessiblePref = sharedPref.getBoolean("accessible_switch", false);
+        int genderPref = Integer.parseInt(sharedPref.getString("gender_list", "0"));
+        genderSpinner.setSelection(genderPref);
+        accessibleCheckBox.setChecked(accessiblePref);
+    }
 }
