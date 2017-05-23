@@ -1,21 +1,15 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -111,17 +105,18 @@ public class ToiletListFragment extends Fragment {
                 setAdapter(true);
             }
         });
+        return view;
+    }
 
-
-
+    private void setAdapter(boolean fromSearch) {
+        toiletStrings.clear();
         // show loading screen
         LoadingScreen loadingScreen = new LoadingScreen();
+
         getActivity().getFragmentManager().beginTransaction()
                 .add(R.id.drawer_layout, loadingScreen).commit();
-
-
         // data ready event listener
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && getActivity() != null) {
@@ -134,18 +129,12 @@ public class ToiletListFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // show error message
-                Snackbar.make(container, "Database error", 3000)
-                        .setAction("OK", v -> getActivity().getFragmentManager().beginTransaction()
-                                .remove(loadingScreen).commit())
-                        .show();
+//                Snackbar.make(container, "Database error", 3000)
+//                        .setAction("OK", v -> getActivity().getFragmentManager().beginTransaction()
+//                                .remove(loadingScreen).commit())
+//                        .show();
             }
         });
-
-        return view;
-    }
-
-    private void setAdapter(boolean fromQuery) {
-        toiletStrings.clear();
         mAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, query) {
             @Override
             protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {
@@ -155,7 +144,8 @@ public class ToiletListFragment extends Fragment {
                 toiletViewHolder.setToilet(toilet);
                 toiletViewHolder.setToiletId(getRef(position).getKey());
                 toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (double) toilet.getTotal_score() / toilet.getCount()));
-                if (!fromQuery) return;
+                if (!fromSearch) return;
+
                 if (searchStaticFragment.getGender() != Toilet.Gender.Both && toilet.getGender() != searchStaticFragment.getGender()) {
                     toiletViewHolder.hide();
                     return;
@@ -212,6 +202,7 @@ public class ToiletListFragment extends Fragment {
             }
         };
         mRecyclerView.setAdapter(mAdapter);
+        Log.d("RecyclerView Height", mRecyclerView.getMeasuredHeight()+"");
     }
 
     @NonNull

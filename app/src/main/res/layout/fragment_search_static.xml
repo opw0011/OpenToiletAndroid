@@ -28,8 +28,7 @@
                 <EditText
                     android:id="@+id/tv_floor"
                     android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:layout_height="wrap_content"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
