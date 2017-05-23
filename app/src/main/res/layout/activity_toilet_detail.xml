@@ -50,7 +50,7 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"
-        app:srcCompat="@drawable/ic_bookmark_white_24dp"
+        app:srcCompat="@drawable/ic_bookmark_white_plus"
         app:pressedTranslationZ="12dp"/>
 
     <android.support.v4.widget.NestedScrollView
@@ -313,7 +313,7 @@
         <!--android:layout_margin="@dimen/fab_margin"-->
         <!--app:layout_anchor="@id/app_bar_layout"-->
         <!--app:layout_anchorGravity="bottom|right|end"-->
-        <!--app:srcCompat="@drawable/ic_bookmark_white_24dp"-->
+        <!--app:srcCompat="@drawable/ic_bookmark_white_plus"-->
         <!--app:pressedTranslationZ="12dp"/>-->
 
     <android.support.design.widget.FloatingActionButton
