@@ -74,6 +74,7 @@ public class SOSListFragment extends Fragment {
                 viewHolder.setTextViewTitle(model.getTitle());
                 viewHolder.setTextViewMessage(model.getMessage());
                 viewHolder.setTextViewTimestamp(model.getCreated_at());
+
                 viewHolder.setButtonSOSResolve(model.getAuthor());
 
                 try {

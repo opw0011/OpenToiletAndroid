@@ -213,7 +213,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="{gmd_accessible} Accessible toilet:" />
+                            android:text="@string/accessible_toilet_text" />
 
                         <TextView
                             android:id="@+id/tv_has_accessible_toilet"
@@ -234,7 +234,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="{gmd_accessibility} Changing room:" />
+                            android:text="@string/changing_room_text" />
 
                         <TextView
                             android:id="@+id/tv_has_changing_room"
@@ -255,7 +255,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="{gmd_hot_tub} Shower:" />
+                            android:text="@string/shower_text" />
 
                         <TextView
                             android:id="@+id/tv_has_shower"
