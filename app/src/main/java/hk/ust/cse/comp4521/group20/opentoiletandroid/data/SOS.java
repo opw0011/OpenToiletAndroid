@@ -1,5 +1,10 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid.data;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by opw on 12/5/2017.
  */
@@ -14,7 +19,7 @@ public class SOS {
 
     public SOS() {}
 
-    public SOS(String toilet_id, String message, String created_at, String title) {
+    public SOS(String toilet_id, String author, String message, String created_at, String title) {
         this.toilet_id = toilet_id;
         this.author = author;
         this.message = message;
@@ -23,7 +28,7 @@ public class SOS {
         this.is_active = true;
     }
 
-    public SOS(String toilet_id, String message, String created_at, String title, boolean active) {
+    public SOS(String toilet_id, String author, String message, String created_at, String title, boolean active) {
         this.toilet_id = toilet_id;
         this.author = author;
         this.message = message;
@@ -40,6 +45,14 @@ public class SOS {
         this.toilet_id = toilet_id;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -50,6 +63,11 @@ public class SOS {
 
     public String getCreated_at() {
         return created_at;
+    }
+
+    public Date obtainCreatedAtDate()throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        return dateFormat.parse(created_at);
     }
 
     public void setCreated_at(String created_at) {
@@ -64,7 +82,7 @@ public class SOS {
         this.title = title;
     }
 
-    public boolean is_active() {
+    public boolean getIs_active() {
         return is_active;
     }
 

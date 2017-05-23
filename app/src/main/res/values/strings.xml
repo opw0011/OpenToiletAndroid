@@ -99,6 +99,7 @@
     <string name="logout_successful">Logout successful.</string>
     <string name="login_tips">Please login before writing an review.</string>
 
+
     <string name="title_activity_send_sos">Send SOS</string>
     <string-array name="sos_common_title_values">
         <item>Feeling unwell</item>
@@ -108,7 +109,13 @@
     </string-array>
 
     <string name="shake_alert_title">Send SOS?</string>
+    <string name="shake_alert_title_not_logged_in">Log in to continue</string>
     <string name="shake_alert_message">You can ask for help by shaking the device if you encounter some difficult situation in toilet. Do you wish to send a help message?</string>
+    <string name="shake_alert_message_not_logged_in">You can ask for help by shaking the device, but you need to login before you can send a help message. Do you wish to login?</string>
     <string name="shake_alert_send">Send</string>
+    <string name="shake_alert_login">Login</string>
     <string name="shake_alert_cancel">Cancel</string>
+
+    <string name="sos_login_tips">Please login before sending an SOS message.</string>
+
 </resources>
