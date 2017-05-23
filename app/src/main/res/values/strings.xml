@@ -117,5 +117,6 @@
     <string name="shake_alert_cancel">Cancel</string>
 
     <string name="sos_login_tips">Please login before sending an SOS message.</string>
+    <string name="sos_empty_title">Title cannot be empty</string>
 
 </resources>
