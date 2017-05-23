@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,10 +46,12 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
     private EditText contentText;
     private Button button;
     private String toiletId;
+    private TextView tvWaitingTime;
     private Button uploadImageButton;
     private StorageReference storageReference;
     private FirebaseAuth auth;
     private Uri selectedImageUri;
+    private static final int SEEK_BAR_WAITING_TIME_INTERVAL = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,25 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
         titleText = (EditText) findViewById(R.id.input_name);
         contentText = (EditText) findViewById(R.id.et_review_content);
         button = (Button) findViewById(R.id.button2);
+        tvWaitingTime = (TextView) findViewById(R.id.tv_waiting_time);
+
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvWaitingTime.setText(String.format("%s minutes", seekBar.getProgress() * SEEK_BAR_WAITING_TIME_INTERVAL));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         button.setOnClickListener((View v) -> {
             button.setEnabled(false);
@@ -84,7 +106,8 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
             FirebaseUser user = auth.getCurrentUser();
             if (user != null) {
                 // Create a review object
-                Review review = new Review(user.getUid(), titleText.getText().toString(), contentText.getText().toString(), formattedDate, ratingBar.getRating(), seekBar.getProgress(), "");
+                Review review = new Review(user.getUid(), titleText.getText().toString(), contentText.getText().toString(), formattedDate,
+                        ratingBar.getRating(), seekBar.getProgress() * SEEK_BAR_WAITING_TIME_INTERVAL, "");
                 // if there photo attached, upload it
                 if (selectedImageUri != null) {
                     StorageReference imgRef = storageReference.child(getFilename(toiletId, selectedImageUri));

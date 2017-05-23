@@ -129,29 +129,32 @@ public class ToiletDetailActivity extends AppCompatActivity {
 
         // Switch the button to minus when the toilet is added to bookmark
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        updateFabState();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Set<String> bookmarks = bookmarkPreference.getStringSet("bookmarks", new HashSet<>());
-
+                // Edit preference
                 SharedPreferences.Editor editor = bookmarkPreference.edit();
+                Set<String> bookmarks = bookmarkPreference.getStringSet("bookmarks", new HashSet<>());
                 if(bookmarks.contains(toiletId)){
                     bookmarks.remove(toiletId);
-
                 } else {
                     bookmarks.add(toiletId);
-
                 }
                 editor.putStringSet("bookmarks", bookmarks);
                 editor.commit();
 
+
                 if(bookmarkPreference.getStringSet("bookmarks", new HashSet<>()).contains(toiletId)) {
-                    Snackbar.make(view, "Successfully bookmarked the toilet.", Snackbar.LENGTH_LONG)
+                    fab.setImageResource(R.drawable.ic_bookmark_white_minus);
+                    Snackbar.make(view, R.string.bookmark_added, Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 } else {
-                    Snackbar.make(view, "Successfully removed the toilet.", Snackbar.LENGTH_LONG)
+                    fab.setImageResource(R.drawable.ic_bookmark_white_plus);
+                    Snackbar.make(view, R.string.bookmark_removed, Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
+                updateFabState();
             }
         });
 
@@ -205,19 +208,19 @@ public class ToiletDetailActivity extends AppCompatActivity {
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
-                    Snackbar.make(findViewById(R.id.fab), getText(R.string.login_cancelled), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.fab), R.string.login_cancelled, Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
                     Log.d(TAG, "No network");
-                    Snackbar.make(findViewById(R.id.fab), getText(R.string.login_no_internet_connection), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.fab), R.string.login_no_internet_connection, Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
                     Log.d(TAG, "Unknown Error");
-                    Snackbar.make(findViewById(R.id.fab), getText(R.string.login_unknown_error), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.fab), R.string.login_unknown_error, Snackbar.LENGTH_SHORT).show();
                 }
             }
         }
@@ -251,6 +254,15 @@ public class ToiletDetailActivity extends AppCompatActivity {
 //        mAdapter.notifyDataSetChanged();
 //        mRecyclerView.invalidate();
 //    }
+
+    protected void updateFabState() {
+        Set<String> bookmarks = bookmarkPreference.getStringSet("bookmarks", new HashSet<>());
+        if(bookmarks.contains(toiletId)){
+            fab.setImageResource(R.drawable.ic_bookmark_white_minus);
+        } else {
+            fab.setImageResource(R.drawable.ic_bookmark_white_plus);
+        }
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
