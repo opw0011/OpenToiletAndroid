@@ -1,6 +1,9 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid.data;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Created by opw on 30/4/2017.
@@ -11,7 +14,7 @@ public class Toilet {
         M, F, Both
     }
 
-    private List<Integer> lift;
+    private HashMap<String, Boolean> lift;
     private String name;
     private String floor;
     private Gender gender;
@@ -25,7 +28,7 @@ public class Toilet {
     private int pa_pos_x;
     private int pa_pos_y;
 
-    public Toilet(boolean has_changing_room, List<Integer> lift, String name, String floor, Gender gender, String image_url, boolean has_accessible_toilet, boolean has_shower, float total_score, int total_waiting_minute, int count, int pa_pos_x, int pa_pos_y) {
+    public Toilet(boolean has_changing_room, HashMap<String, Boolean> lift, String name, String floor, Gender gender, String image_url, boolean has_accessible_toilet, boolean has_shower, float total_score, int total_waiting_minute, int count, int pa_pos_x, int pa_pos_y) {
         this.has_changing_room = has_changing_room;
         this.lift = lift;
         this.name = name;
@@ -44,8 +47,10 @@ public class Toilet {
     public Toilet() {
     }
 
-    public List<Integer> getLift() {
-        return lift;
+    public List<String> getLift() {
+        List<String> stringList = new ArrayList<>();
+        stringList.addAll(lift.keySet());
+        return stringList;
     }
 
     public String getName() {
@@ -96,9 +101,6 @@ public class Toilet {
         return pa_pos_y;
     }
 
-    public void setLift(List<Integer> lift) {
-        this.lift = lift;
-    }
 
     public void setName(String name) {
         this.name = name;

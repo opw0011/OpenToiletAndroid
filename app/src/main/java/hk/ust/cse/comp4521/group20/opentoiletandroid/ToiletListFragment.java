@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+import xyz.sahildave.widget.SearchViewLayout;
 
 
 /**
@@ -43,6 +45,8 @@ public class ToiletListFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Map<ToiletViewHolder, String> toiletStrings = new HashMap<>();
+    private Query query;
+    private int queryDoneOnFB = -1;
 
     public ToiletListFragment() {
         // Required empty public constructor
@@ -55,6 +59,31 @@ public class ToiletListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_toilet_list, container, false);
+        // get data from Firebase
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items_test");
+        query = mRef;
+        final SearchViewLayout searchViewLayout = (SearchViewLayout) getActivity().findViewById(R.id.search_view_container);
+        if (searchViewLayout.getVisibility() == View.GONE) searchViewLayout.setVisibility(View.VISIBLE);
+        searchViewLayout.handleToolbarAnimation(((MainActivity)getActivity()).getToolbar());
+        SearchStaticFragment searchStaticFragment = new SearchStaticFragment();
+        searchViewLayout.setExpandedContentFragment(getActivity(), searchStaticFragment);
+        searchViewLayout.setSearchListener(new SearchViewLayout.SearchListener() {
+            @Override
+            public void onFinished(String searchKeyword) {
+                searchViewLayout.collapse();
+                if (searchStaticFragment.getFloor().length() != 0) {
+                    query = mRef.orderByChild("floor").equalTo(searchStaticFragment.getFloor());
+                    queryDoneOnFB = 0;
+                } else if (searchStaticFragment.getLiftNumber() != -1) {
+                    query = mRef.orderByChild("lift/" + searchStaticFragment.getLiftNumber()).equalTo(true);
+                    queryDoneOnFB = 1;
+                } else if (searchStaticFragment.getGender() != SearchStaticFragment.Gender.Both) {
+                    query = mRef.orderByChild("gender").equalTo(searchStaticFragment.getGender().toString());
+                    queryDoneOnFB = 2;
+                }
+                setAdapter();
+            }
+        });
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.lvToilet);
 
@@ -67,33 +96,31 @@ public class ToiletListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // show loading screen
-        LoadingScreen loadingScreen = new LoadingScreen();
-        getActivity().getFragmentManager().beginTransaction()
-                .add(R.id.drawer_layout, loadingScreen).commit();
+//        LoadingScreen loadingScreen = new LoadingScreen();
+//        getActivity().getFragmentManager().beginTransaction()
+//                .add(R.id.drawer_layout, loadingScreen).commit();
 
-        // get data from Firebase
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items");
 
         // data ready event listener
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // remove loading screen when data is ready
-                    getActivity().getFragmentManager().beginTransaction()
-                            .remove(loadingScreen).commit();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // show error message
-                Snackbar.make(container, "Database error", 3000)
-                        .setAction("OK", v -> getActivity().getFragmentManager().beginTransaction()
-                                .remove(loadingScreen).commit())
-                        .show();
-            }
-        });
+//        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists() && getActivity() != null) {
+//                    // remove loading screen when data is ready
+//                    getActivity().getFragmentManager().beginTransaction()
+//                            .remove(loadingScreen).commit();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                // show error message
+//                Snackbar.make(container, "Database error", 3000)
+//                        .setAction("OK", v -> getActivity().getFragmentManager().beginTransaction()
+//                                .remove(loadingScreen).commit())
+//                        .show();
+//            }
+//        });
 
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -101,7 +128,13 @@ public class ToiletListFragment extends Fragment {
         int genderPref = Integer.parseInt(sharedPref.getString("gender_list", "-1"));
 
         // display data to the user
-        mAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, mRef) {
+        setAdapter();
+
+        return view;
+    }
+
+    private void setAdapter() {
+        mAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, query) {
             @Override
             protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {
                 // create list items
@@ -111,61 +144,14 @@ public class ToiletListFragment extends Fragment {
                 toiletViewHolder.setToiletId(getRef(position).getKey());
                 toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (double) toilet.getTotal_score() / toilet.getCount()));
 
-                // create search string
-                String content = getToiletContentString(toilet);
-                toiletStrings.put(toiletViewHolder, content);
+//                // create search string
+//                String content = getToiletContentString(toilet);
+//                toiletStrings.put(toiletViewHolder, content);
 
-                hideToiletsAsPref(toiletViewHolder, toilet, accessiblePref, genderPref);
+//                hideToiletsAsPref(toiletViewHolder, toilet, accessiblePref, genderPref);
             }
         };
         mRecyclerView.setAdapter(mAdapter);
-
-        EditText searchBox = (EditText) view.findViewById(R.id.searchBox);
-        searchBox.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // if query string is empty, show all items
-                if (s.length() == 0) {
-                    for (Map.Entry<ToiletViewHolder, String> e : toiletStrings.entrySet()) {
-                        ToiletViewHolder view = e.getKey();
-                        view.show();
-                    }
-                    return;
-                }
-
-                // normalize query string
-                List<String> queryList = getNormalizedQueryStringList(s);
-
-                for (Map.Entry<ToiletViewHolder, String> e : toiletStrings.entrySet()) {
-                    ToiletViewHolder view = e.getKey();
-                    String content = e.getValue();
-
-                    // show item if relevant
-                    boolean show = false;
-                    for (String ss : queryList)
-                        if (content.contains(ss)) {
-                            show = true;
-                            break;
-                        }
-                    if (show)
-                        view.show();
-                    else
-                        view.hide();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        return view;
     }
 
     @NonNull
@@ -195,7 +181,7 @@ public class ToiletListFragment extends Fragment {
         strBdr.append(toilet.getGender() == Toilet.Gender.M ? getPrefixString("male") :
                 toilet.getGender() == Toilet.Gender.F ? getPrefixString("female") :
                         getPrefixString("male") + getPrefixString("female"));
-        for (int k : toilet.getLift())
+        for (String k : toilet.getLift())
             strBdr.append(k).append(" ");
         strBdr.append(toilet.isHas_changing_room() ? getPrefixString("changing") : "");
         strBdr.append(toilet.isHas_shower() ? getPrefixString("showering") : "");
