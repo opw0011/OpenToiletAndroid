@@ -26,6 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
 
 
@@ -55,30 +59,45 @@ public class SOSListFragment extends Fragment {
         // get data from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("sos_items");
         // filter only the active sos request
-        Query queryRef = mRef.orderByChild("_active").equalTo(true);
+        Query queryRef = mRef.orderByChild("is_active").equalTo(true);
 
         mAdapter = new FirebaseRecyclerAdapter<SOS, SOSViewHolder>(SOS.class, R.layout.sos_list_item, SOSViewHolder.class, queryRef) {
+
             @Override
             protected void populateViewHolder(SOSViewHolder viewHolder, SOS model, int position) {
+                // Calculate the time that should be shown
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.HOUR, -2);
+                Date startingTime = calendar.getTime();
+
                 viewHolder.setTextViewTitle(model.getTitle());
                 viewHolder.setTextViewMessage(model.getMessage());
                 viewHolder.setTextViewTimestamp(model.getCreated_at());
 
-                // Retrieve toilet detail using toilet id
-                // http://stackoverflow.com/questions/36235919/how-to-use-a-firebaserecycleradapter-with-a-dynamic-reference-in-android
-                String toiletID = model.getToilet_id();
-                FirebaseDatabase.getInstance().getReference("toilet_items").child(toiletID).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String toiletName = dataSnapshot.child("name").getValue(String.class);
-                        viewHolder.setTextViewToiletName(toiletName);
-                    }
+                try {
+                    if (model.obtainCreatedAtDate().after(startingTime)) {
+                        // Retrieve toilet detail using toilet id
+                        // http://stackoverflow.com/questions/36235919/how-to-use-a-firebaserecycleradapter-with-a-dynamic-reference-in-android
+                        String toiletID = model.getToilet_id();
+                        FirebaseDatabase.getInstance().getReference("toilet_items").child(toiletID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String toiletName = dataSnapshot.child("name").getValue(String.class);
+                                viewHolder.setTextViewToiletName(toiletName);
+                            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.d(TAG, databaseError.getDetails());
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.d(TAG, databaseError.getDetails());
+                            }
+                        });
+                    } else {
+                        this.getRef(position).removeValue();
+//                        viewHolder.hide();
                     }
-                });
+                } catch (ParseException e){
+                    viewHolder.hide();
+                }
             }
         };
         mRecyclerView.setAdapter(mAdapter);

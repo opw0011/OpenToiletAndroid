@@ -1,5 +1,10 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid.data;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by opw on 12/5/2017.
  */
@@ -58,6 +63,11 @@ public class SOS {
         return created_at;
     }
 
+    public Date obtainCreatedAtDate()throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        return dateFormat.parse(created_at);
+    }
+
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
@@ -70,7 +80,7 @@ public class SOS {
         this.title = title;
     }
 
-    public boolean is_active() {
+    public boolean getIs_active() {
         return is_active;
     }
 
