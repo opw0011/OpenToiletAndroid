@@ -116,7 +116,12 @@
     <string name="shake_alert_login">Login</string>
     <string name="shake_alert_cancel">Cancel</string>
 
+
     <string name="sos_login_tips">Please login before sending an SOS message.</string>
     <string name="sos_empty_title">Title cannot be empty</string>
+    <string name="sos_login_tips">Please login before sending an SOS message.</string>
+
+    <string name="bookmark_added">Successfully bookmarked the toilet.</string>
+    <string name="bookmark_removed">Successfully removed the toilet.</string>
 
 </resources>
