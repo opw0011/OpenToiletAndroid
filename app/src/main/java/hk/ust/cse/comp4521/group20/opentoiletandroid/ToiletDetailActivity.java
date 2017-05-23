@@ -81,7 +81,7 @@ public class ToiletDetailActivity extends AppCompatActivity {
             collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.primary_text_light));
             toiletId = bundle.getString("ToiletId");
             Log.d(TAG, "ToiletId: " + toiletId);
-            mToiletRef = FirebaseDatabase.getInstance().getReference("toilet_items_test/" + toiletId);
+            mToiletRef = FirebaseDatabase.getInstance().getReference("toilet_items/" + toiletId);
             mToiletRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
