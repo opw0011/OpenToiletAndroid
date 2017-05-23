@@ -21,6 +21,7 @@ public class SOS {
 
     public SOS(String toilet_id, String author, String message, String created_at, String title) {
         this.toilet_id = toilet_id;
+        this.author = author;
         this.message = message;
         this.created_at = created_at;
         this.title = title;
@@ -29,6 +30,7 @@ public class SOS {
 
     public SOS(String toilet_id, String author, String message, String created_at, String title, boolean active) {
         this.toilet_id = toilet_id;
+        this.author = author;
         this.message = message;
         this.created_at = created_at;
         this.title = title;
