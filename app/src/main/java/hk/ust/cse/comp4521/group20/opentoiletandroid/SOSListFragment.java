@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
 
@@ -53,29 +59,45 @@ public class SOSListFragment extends Fragment {
         // get data from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("sos_items");
         // filter only the active sos request
-        Query queryRef = mRef.orderByChild("_active").equalTo(true);
+        Query queryRef = mRef.orderByChild("is_active").equalTo(true);
 
         mAdapter = new FirebaseRecyclerAdapter<SOS, SOSViewHolder>(SOS.class, R.layout.sos_list_item, SOSViewHolder.class, queryRef) {
+
             @Override
             protected void populateViewHolder(SOSViewHolder viewHolder, SOS model, int position) {
+                // Calculate the time that should be shown
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.HOUR, -2);
+                Date startingTime = calendar.getTime();
+
                 viewHolder.setTextViewTitle(model.getTitle());
                 viewHolder.setTextViewMessage(model.getMessage());
+                viewHolder.setTextViewTimestamp(model.getCreated_at());
 
-                // Retrieve toilet detail using toilet id
-                // http://stackoverflow.com/questions/36235919/how-to-use-a-firebaserecycleradapter-with-a-dynamic-reference-in-android
-                String toiletID = model.getToilet_id();
-                FirebaseDatabase.getInstance().getReference("toilet_items").child(toiletID).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String toiletName = dataSnapshot.child("name").getValue(String.class);
-                        viewHolder.setTextViewToiletName(toiletName);
-                    }
+                try {
+                    if (model.obtainCreatedAtDate().after(startingTime)) {
+                        // Retrieve toilet detail using toilet id
+                        // http://stackoverflow.com/questions/36235919/how-to-use-a-firebaserecycleradapter-with-a-dynamic-reference-in-android
+                        String toiletID = model.getToilet_id();
+                        FirebaseDatabase.getInstance().getReference("toilet_items").child(toiletID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String toiletName = dataSnapshot.child("name").getValue(String.class);
+                                viewHolder.setTextViewToiletName(toiletName);
+                            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.d(TAG, databaseError.getDetails());
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.d(TAG, databaseError.getDetails());
+                            }
+                        });
+                    } else {
+                        this.getRef(position).removeValue();
+//                        viewHolder.hide();
                     }
-                });
+                } catch (ParseException e){
+                    viewHolder.hide();
+                }
             }
         };
         mRecyclerView.setAdapter(mAdapter);
@@ -87,14 +109,18 @@ public class SOSListFragment extends Fragment {
                 .color(Color.WHITE)
                 .sizeDp(24);
         fab.setImageDrawable(icon);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fab.setOnClickListener(fabView -> {
+            if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+                Snackbar.make(fabView, getText(R.string.sos_login_tips), Snackbar.LENGTH_SHORT)
+                        .setAction("Login", tipView -> {
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            mainActivity.startLoginActivity();
+                        }).show();
+            } else {
                 Intent intent = new Intent(getContext(), SendSOSActivity.class);
                 startActivity(intent);
             }
         });
-
         return view;
     }
 

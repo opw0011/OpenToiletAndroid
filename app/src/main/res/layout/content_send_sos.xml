@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/spacing_medium"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.SendSOSActivity"
     tools:showIn="@layout/activity_send_sos">
@@ -14,12 +15,19 @@
         android:id="@+id/tiLayout_sos_location"
         android:layout_marginTop="@dimen/spacing_medium">
 
-        <AutoCompleteTextView
-            android:id="@+id/input_sos_location"
+        <TextView
+            android:textSize="@dimen/text_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Your current location:" />
+
+        <Spinner
+            android:id="@+id/spinner_sos_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:hint="Where are you?" />
+            android:layout_weight="1" />
+
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout

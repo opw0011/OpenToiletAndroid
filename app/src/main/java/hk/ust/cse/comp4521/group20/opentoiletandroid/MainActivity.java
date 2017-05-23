@@ -9,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
 import java.util.Arrays;
 
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -98,18 +102,30 @@ public class MainActivity extends AppCompatActivity
         ShakeDetector.create(this, () -> {
             Log.d(TAG, "Shake Detected");
             if(alertDialog == null || !alertDialog.isShowing()) {
-                alertDialog = alertBuilder
-                        .setTitle(R.string.shake_alert_title)
-                        .setMessage(R.string.shake_alert_message)
-                        .setPositiveButton(R.string.shake_alert_send, (DialogInterface dialog, int which) -> {
-                            dialog.dismiss();
+                if(auth.getCurrentUser() == null) {
+                    alertDialog = alertBuilder
+                            .setTitle(R.string.shake_alert_title_not_logged_in)
+                            .setMessage(R.string.shake_alert_message_not_logged_in)
+                            .setPositiveButton(R.string.shake_alert_login, (DialogInterface dialog, int which) -> {
+                                dialog.dismiss();
+                                startLoginActivity();
+                            })
+                            .setNegativeButton(R.string.shake_alert_cancel, (DialogInterface dialog, int which) -> dialog.dismiss())
+                            .show();
+                } else {
+                    alertDialog = alertBuilder
+                            .setTitle(R.string.shake_alert_title)
+                            .setMessage(R.string.shake_alert_message)
+                            .setPositiveButton(R.string.shake_alert_send, (DialogInterface dialog, int which) -> {
+                                dialog.dismiss();
 
-                            // Go to the send SOS activity
-                            Intent intent = new Intent(this, SendSOSActivity.class);
-                            startActivity(intent);
-                        })
-                        .setNegativeButton(R.string.shake_alert_cancel, (DialogInterface dialog, int which) -> dialog.dismiss())
-                        .show();
+                                // Go to the send SOS activity
+                                Intent intent = new Intent(this, SendSOSActivity.class);
+                                startActivity(intent);
+                            })
+                            .setNegativeButton(R.string.shake_alert_cancel, (DialogInterface dialog, int which) -> dialog.dismiss())
+                            .show();
+                }
             }
         });
 
@@ -140,8 +156,9 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -187,16 +204,7 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
         } else {
-                startActivityForResult(
-                        AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .setIsSmartLockEnabled(false)
-                                .setTheme(R.style.AppTheme)
-                                .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
-                                .build(),
-                        0);
+            startLoginActivity();
             }
         } else if (id == R.id.nav_setting) {
             Intent intent = new Intent(this, SettingsActivity.class);
@@ -313,5 +321,18 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onDestroy");
         super.onDestroy();
         ShakeDetector.destroy();
+    }
+
+    void startLoginActivity() {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
+                        .setTheme(R.style.AppTheme)
+                        .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                        .build(),
+                0);
     }
 }

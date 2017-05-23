@@ -53,6 +53,7 @@ dependencies {
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
     compile 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar'
     compile 'com.github.tbouron.shakedetector:library:1.0.0@aar'
+    compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
     testCompile 'junit:junit:4.12'
 }
 

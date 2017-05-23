@@ -4,14 +4,25 @@
 
 ## To-Do List
 **UI Design**
-- [x] Navigation drawer
-- [x] Toilet list fragment
-- [ ] Toilet detail fragment
-- [ ] Toilet list search bar
-- [ ] Login and signup activity
+- [x] ~~Navigation drawer~~
+- [x] ~~Toilet list fragment~~
+- [x] ~~Toilet detail fragment~~
+- [x] ~~Login and signup activity~~
+- [ ] Toilet Review input validation, improve wating time seek bar
+- [ ] Toilet list search fragment (lift, floor, gender and otherr facilities)
+- [ ] Main page showing top rated toilet or notice
+
 
 **Features**
-- [ ] User signup & login
-- [ ] Give toilet rating
-- [ ] Write toilet review
-- [ ] Save app preference
+- [x] ~~User signup & login~~
+- [x] ~~Give toilet rating~~
+- [x] ~~Write toilet review~~
+- [x] ~~Save app preference~~
+- [ ] SOS Request + Response 
+- [ ] Search using Firebase Query instead of local search
+
+**Web Admin Platform**
+- [ ] List toilet data
+- [ ] Edit toilet data
+- [ ] Edit toilet review
+- [ ] Admin login
