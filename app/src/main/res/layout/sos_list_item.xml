@@ -30,29 +30,28 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_sos_message"
+            android:id="@+id/tv_sos_toilet_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_sos_title"
             android:padding="@dimen/spacing_medium"
             android:text="Item 2" />
 
-
         <TextView
-            android:id="@+id/tv_sos_toilet_name"
+            android:id="@+id/tv_sos_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_sos_message"
+            android:layout_below="@+id/tv_sos_toilet_name"
             android:padding="@dimen/spacing_medium"
             android:text="Item 2" />
 
         <Button
-            android:id="@+id/btn_sos_help"
+            android:id="@+id/btn_sos_resolve"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="Help" />
+            android:text="Resolve" />
 
 
     </RelativeLayout>
