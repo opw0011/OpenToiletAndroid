@@ -125,7 +125,7 @@
     <string name="main_popular_toilets">Most Popular Toilets</string>
     <string name="main_welcome_message">You can check the review of the toilets in HKUST and feel free to explore our app! Have fun and wish you a pleasant toilet experience!</string>
     <string name="main_welcome_heading">Welcome to OpenToilet!</string>
-    <string name="sos_empty_help_message">There is no SOS request currently Thank you for offering help.   Do you need help? Press on the bell button below.</string>
+    <string name="sos_empty_help_message">There is no SOS request currently. Thank you for offering help.\n\nDo you need help?\nPress on the bell button below.</string>
     <string name="sos_empty_help_title">No one need help</string>
 
 </resources>
