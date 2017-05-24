@@ -31,7 +31,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.SOS;
 
 
 /**
@@ -46,6 +46,9 @@ public class SOSListFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
 
 
+    /**
+     * Instantiates a new Sos list fragment.
+     */
     public SOSListFragment() {
         // Required empty public constructor
     }
@@ -62,7 +65,7 @@ public class SOSListFragment extends Fragment {
         // empty view
         mEmptyCardView = (CardView) view.findViewById(R.id.empty_view_SOSList);
 
-        // get data from Firebase
+        // get models from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("sos_items");
         // filter only the active sos request
         Query queryRef = mRef.orderByChild("is_active").equalTo(true);

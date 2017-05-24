@@ -34,10 +34,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Review;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 
+/**
+ * The type Write toilet review activity.
+ */
 public class WriteToiletReviewActivity extends AppCompatActivity {
+    /**
+     * The constant SELECT_IMAGE.
+     */
     protected static final int SELECT_IMAGE = 1;
     private static final String TAG = "WriteToiletReview";
     private RatingBar ratingBar;
@@ -172,6 +178,13 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets filename.
+     *
+     * @param toiletId the toilet id
+     * @param imageUri the image uri
+     * @return the filename
+     */
     protected String getFilename(String toiletId, Uri imageUri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
@@ -179,6 +192,11 @@ public class WriteToiletReviewActivity extends AppCompatActivity {
         return "image_items/"+ toiletId + "/" + UUID.randomUUID()+ "." + mime.getExtensionFromMimeType(cR.getType(imageUri));
     }
 
+    /**
+     * Review update.
+     *
+     * @param review the review
+     */
     protected void reviewUpdate (Review review) {
         final String finalToiletId = toiletId;
         DatabaseReference mReviewRef = FirebaseDatabase.getInstance().getReference("review_items/"+ finalToiletId);

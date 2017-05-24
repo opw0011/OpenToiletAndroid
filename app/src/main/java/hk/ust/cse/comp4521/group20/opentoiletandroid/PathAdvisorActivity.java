@@ -1,18 +1,18 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+/**
+ * The type Path advisor activity.
+ */
 public class PathAdvisorActivity extends AppCompatActivity {
     private static final String TAG = "PathAdvisorActivity";
 
@@ -29,7 +29,7 @@ public class PathAdvisorActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        // Get the data passed by the intent
+        // Get the models passed by the intent
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             toiletId = bundle.getString("ToiletId");

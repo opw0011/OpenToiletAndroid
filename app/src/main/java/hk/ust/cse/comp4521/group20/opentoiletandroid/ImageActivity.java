@@ -11,6 +11,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+/**
+ * The type Image activity.
+ */
 public class ImageActivity extends AppCompatActivity {
 
     @Override

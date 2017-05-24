@@ -35,9 +35,15 @@ import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
 import java.util.Arrays;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    /**
+     * The constant TAG.
+     */
     public static final String TAG = "MainActivity";
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -51,6 +57,9 @@ public class MainActivity extends AppCompatActivity
 
     private FirebaseAuth auth;
 
+    /**
+     * The constant LOGIN.
+     */
     public static final int LOGIN = 0;
 
     private static final float SHAKE_FORCE = (float) 1.25;
@@ -260,6 +269,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Sets header.
+     *
+     * @param user the user
+     */
     protected void setHeader(FirebaseUser user) {
         if (user != null) {
             String username = user.getDisplayName();
@@ -288,6 +302,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Show snackbar.
+     *
+     * @param msg      the msg
+     * @param duration the duration
+     */
     protected void showSnackbar(CharSequence msg, int duration) {
         Snackbar.make(findViewById(R.id.nav_view), msg, duration)
                 .setAction("Action", null).show();
@@ -325,10 +345,19 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    /**
+     * Gets toolbar.
+     *
+     * @return the toolbar
+     */
     public Toolbar getToolbar() {
         toolbar =  (Toolbar) findViewById(R.id.toolbar);
         return toolbar;
     }
+
+    /**
+     * Start login activity.
+     */
     void startLoginActivity() {
         startActivityForResult(
                 AuthUI.getInstance()

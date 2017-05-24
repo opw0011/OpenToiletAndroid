@@ -10,7 +10,7 @@
  * Extends Android ImageView to include pinch zooming, panning, fling and double tap zoom.
  */
 
-package com.ortiz.touch;
+package hk.ust.cse.comp4521.group20.opentoiletandroid;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -38,6 +38,9 @@ import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
+/**
+ * The type Touch image view.
+ */
 public class TouchImageView extends ImageView {
 	
 	private static final String DEBUG = "DEBUG";
@@ -63,7 +66,24 @@ public class TouchImageView extends ImageView {
     //
 	private Matrix matrix, prevMatrix;
 
-    private static enum State { NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM };
+    private enum State {
+        /**
+         * None state.
+         */
+        NONE, /**
+         * Drag state.
+         */
+        DRAG, /**
+         * Zoom state.
+         */
+        ZOOM, /**
+         * Fling state.
+         */
+        FLING, /**
+         * Animate zoom state.
+         */
+        ANIMATE_ZOOM }
+
     private State state;
 
     private float minScale;
@@ -98,16 +118,34 @@ public class TouchImageView extends ImageView {
     private OnTouchListener userTouchListener = null;
     private OnTouchImageViewListener touchImageViewListener = null;
 
+    /**
+     * Instantiates a new Touch image view.
+     *
+     * @param context the context
+     */
     public TouchImageView(Context context) {
         super(context);
         sharedConstructing(context);
     }
 
+    /**
+     * Instantiates a new Touch image view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public TouchImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         sharedConstructing(context);
     }
-    
+
+    /**
+     * Instantiates a new Touch image view.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public TouchImageView(Context context, AttributeSet attrs, int defStyle) {
     	super(context, attrs, defStyle);
     	sharedConstructing(context);
@@ -140,11 +178,21 @@ public class TouchImageView extends ImageView {
     public void setOnTouchListener(View.OnTouchListener l) {
         userTouchListener = l;
     }
-    
+
+    /**
+     * Sets on touch image view listener.
+     *
+     * @param l the l
+     */
     public void setOnTouchImageViewListener(OnTouchImageViewListener l) {
     	touchImageViewListener = l;
     }
 
+    /**
+     * Sets on double tap listener.
+     *
+     * @param l the l
+     */
     public void setOnDoubleTapListener(GestureDetector.OnDoubleTapListener l) {
         doubleTapListener = l;
     }
@@ -201,17 +249,19 @@ public class TouchImageView extends ImageView {
     public ScaleType getScaleType() {
     	return mScaleType;
     }
-    
+
     /**
      * Returns false if image is in initial, unzoomed state. False, otherwise.
+     *
      * @return true if image is zoomed
      */
     public boolean isZoomed() {
     	return normalizedScale != 1;
     }
-    
+
     /**
      * Return a Rect representing the zoomed image.
+     *
      * @return rect representing zoomed image
      */
     public RectF getZoomedRect() {
@@ -291,9 +341,10 @@ public class TouchImageView extends ImageView {
     	super.onConfigurationChanged(newConfig);
     	savePreviousImageValues();
     }
-    
+
     /**
      * Get the max zoom multiplier.
+     *
      * @return max zoom multiplier.
      */
     public float getMaxZoom() {
@@ -302,39 +353,43 @@ public class TouchImageView extends ImageView {
 
     /**
      * Set the max zoom multiplier. Default value: 3.
+     *
      * @param max max zoom multiplier.
      */
     public void setMaxZoom(float max) {
         maxScale = max;
         superMaxScale = SUPER_MAX_MULTIPLIER * maxScale;
     }
-    
+
     /**
      * Get the min zoom multiplier.
+     *
      * @return min zoom multiplier.
      */
     public float getMinZoom() {
     	return minScale;
     }
-    
+
     /**
      * Get the current zoom. This is the zoom relative to the initial
      * scale, not the original resource.
+     *
      * @return current zoom multiplier.
      */
     public float getCurrentZoom() {
     	return normalizedScale;
     }
-    
+
     /**
      * Set the min zoom multiplier. Default value: 1.
+     *
      * @param min min zoom multiplier.
      */
     public void setMinZoom(float min) {
     	minScale = min;
     	superMinScale = SUPER_MIN_MULTIPLIER * minScale;
     }
-    
+
     /**
      * Reset zoom and translation to initial state.
      */
@@ -342,37 +397,40 @@ public class TouchImageView extends ImageView {
     	normalizedScale = 1;
     	fitImageToView();
     }
-    
+
     /**
      * Set zoom to the specified scale. ImageActivity will be centered by default.
-     * @param scale
+     *
+     * @param scale the scale
      */
     public void setZoom(float scale) {
     	setZoom(scale, 0.5f, 0.5f);
     }
-    
+
     /**
      * Set zoom to the specified scale. ImageActivity will be centered around the point
      * (focusX, focusY). These floats range from 0 to 1 and denote the focus point
-     * as a fraction from the left and top of the view. For example, the top left 
+     * as a fraction from the left and top of the view. For example, the top left
      * corner of the image would be (0, 0). And the bottom right corner would be (1, 1).
-     * @param scale
-     * @param focusX
-     * @param focusY
+     *
+     * @param scale  the scale
+     * @param focusX the focus x
+     * @param focusY the focus y
      */
     public void setZoom(float scale, float focusX, float focusY) {
     	setZoom(scale, focusX, focusY, mScaleType);
     }
-    
+
     /**
      * Set zoom to the specified scale. ImageActivity will be centered around the point
      * (focusX, focusY). These floats range from 0 to 1 and denote the focus point
-     * as a fraction from the left and top of the view. For example, the top left 
+     * as a fraction from the left and top of the view. For example, the top left
      * corner of the image would be (0, 0). And the bottom right corner would be (1, 1).
-     * @param scale
-     * @param focusX
-     * @param focusY
-     * @param scaleType
+     *
+     * @param scale     the scale
+     * @param focusX    the focus x
+     * @param focusY    the focus y
+     * @param scaleType the scale type
      */
     public void setZoom(float scale, float focusX, float focusY, ScaleType scaleType) {
     	//
@@ -397,22 +455,24 @@ public class TouchImageView extends ImageView {
     	fixTrans();
     	setImageMatrix(matrix);
     }
-    
+
     /**
      * Set zoom parameters equal to another TouchImageView. Including scale, position,
      * and ScaleType.
-     * @param TouchImageView
+     *
+     * @param img the img
      */
     public void setZoom(TouchImageView img) {
     	PointF center = img.getScrollPosition();
     	setZoom(img.getCurrentZoom(), center.x, center.y, img.getScaleType());
     }
-    
+
     /**
      * Return the point at the center of the zoomed image. The PointF coordinates range
-     * in value between 0 and 1 and the focus point is denoted as a fraction from the left 
-     * and top of the view. For example, the top left corner of the image would be (0, 0). 
+     * in value between 0 and 1 and the focus point is denoted as a fraction from the left
+     * and top of the view. For example, the top left corner of the image would be (0, 0).
      * And the bottom right corner would be (1, 1).
+     *
      * @return PointF representing the scroll position of the zoomed image.
      */
     public PointF getScrollPosition() {
@@ -428,12 +488,13 @@ public class TouchImageView extends ImageView {
         point.y /= drawableHeight;
         return point;
     }
-    
+
     /**
      * Set the focus point of the zoomed image. The focus points are denoted as a fraction from the
-     * left and top of the view. The focus points can range in value between 0 and 1. 
-     * @param focusX
-     * @param focusY
+     * left and top of the view. The focus points can range in value between 0 and 1.
+     *
+     * @param focusX the focus x
+     * @param focusY the focus y
      */
     public void setScrollPosition(float focusX, float focusY) {
     	setZoom(normalizedScale, focusX, focusY);
@@ -719,7 +780,13 @@ public class TouchImageView extends ImageView {
     private void setState(State state) {
     	this.state = state;
     }
-    
+
+    /**
+     * Can scroll horizontally froyo boolean.
+     *
+     * @param direction the direction
+     * @return the boolean
+     */
     public boolean canScrollHorizontallyFroyo(int direction) {
         return canScrollHorizontally(direction);
     }
@@ -803,9 +870,15 @@ public class TouchImageView extends ImageView {
             return false;
         }
     }
-    
+
+    /**
+     * The interface On touch image view listener.
+     */
     public interface OnTouchImageViewListener {
-    	public void onMove();
+        /**
+         * On move.
+         */
+        void onMove();
     }
     
     /**
@@ -968,7 +1041,15 @@ public class TouchImageView extends ImageView {
     	private PointF startTouch;
     	private PointF endTouch;
 
-    	DoubleTapZoom(float targetZoom, float focusX, float focusY, boolean stretchImageToSuper) {
+        /**
+         * Instantiates a new Double tap zoom.
+         *
+         * @param targetZoom          the target zoom
+         * @param focusX              the focus x
+         * @param focusY              the focus y
+         * @param stretchImageToSuper the stretch image to super
+         */
+        DoubleTapZoom(float targetZoom, float focusX, float focusY, boolean stretchImageToSuper) {
     		setState(State.ANIMATE_ZOOM);
     		startTime = System.currentTimeMillis();
     		this.startZoom = normalizedScale;
@@ -1104,11 +1185,26 @@ public class TouchImageView extends ImageView {
      *
      */
     private class Fling implements Runnable {
-    	
+
+        /**
+         * The Scroller.
+         */
         CompatScroller scroller;
-    	int currX, currY;
-    	
-    	Fling(int velocityX, int velocityY) {
+        /**
+         * The Curr x.
+         */
+        int currX, /**
+         * The Curr y.
+         */
+        currY;
+
+        /**
+         * Instantiates a new Fling.
+         *
+         * @param velocityX the velocity x
+         * @param velocityY the velocity y
+         */
+        Fling(int velocityX, int velocityY) {
     		setState(State.FLING);
     		scroller = new CompatScroller(context);
     		matrix.getValues(m);
@@ -1133,13 +1229,16 @@ public class TouchImageView extends ImageView {
     			minY = maxY = startY;
     		}
     		
-    		scroller.fling(startX, startY, (int) velocityX, (int) velocityY, minX,
+    		scroller.fling(startX, startY, velocityX, velocityY, minX,
                     maxX, minY, maxY);
     		currX = startX;
     		currY = startY;
     	}
-    	
-    	public void cancelFling() {
+
+        /**
+         * Cancel fling.
+         */
+        public void cancelFling() {
     		if (scroller != null) {
     			setState(State.NONE);
     			scroller.forceFinished(true);
@@ -1179,11 +1278,25 @@ public class TouchImageView extends ImageView {
     
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	private class CompatScroller {
-    	Scroller scroller;
-    	OverScroller overScroller;
-    	boolean isPreGingerbread;
-    	
-    	public CompatScroller(Context context) {
+        /**
+         * The Scroller.
+         */
+        Scroller scroller;
+        /**
+         * The Over scroller.
+         */
+        OverScroller overScroller;
+        /**
+         * The Is pre gingerbread.
+         */
+        boolean isPreGingerbread;
+
+        /**
+         * Instantiates a new Compat scroller.
+         *
+         * @param context the context
+         */
+        public CompatScroller(Context context) {
     		if (VERSION.SDK_INT < VERSION_CODES.GINGERBREAD) {
     			isPreGingerbread = true;
     			scroller = new Scroller(context);
@@ -1193,32 +1306,59 @@ public class TouchImageView extends ImageView {
     			overScroller = new OverScroller(context);
     		}
     	}
-    	
-    	public void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY) {
+
+        /**
+         * Fling.
+         *
+         * @param startX    the start x
+         * @param startY    the start y
+         * @param velocityX the velocity x
+         * @param velocityY the velocity y
+         * @param minX      the min x
+         * @param maxX      the max x
+         * @param minY      the min y
+         * @param maxY      the max y
+         */
+        public void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY) {
     		if (isPreGingerbread) {
     			scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
     		} else {
     			overScroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
     		}
     	}
-    	
-    	public void forceFinished(boolean finished) {
+
+        /**
+         * Force finished.
+         *
+         * @param finished the finished
+         */
+        public void forceFinished(boolean finished) {
     		if (isPreGingerbread) {
     			scroller.forceFinished(finished);
     		} else {
     			overScroller.forceFinished(finished);
     		}
     	}
-    	
-    	public boolean isFinished() {
+
+        /**
+         * Is finished boolean.
+         *
+         * @return the boolean
+         */
+        public boolean isFinished() {
     		if (isPreGingerbread) {
     			return scroller.isFinished();
     		} else {
     			return overScroller.isFinished();
     		}
     	}
-    	
-    	public boolean computeScrollOffset() {
+
+        /**
+         * Compute scroll offset boolean.
+         *
+         * @return the boolean
+         */
+        public boolean computeScrollOffset() {
     		if (isPreGingerbread) {
     			return scroller.computeScrollOffset();
     		} else {
@@ -1226,16 +1366,26 @@ public class TouchImageView extends ImageView {
     			return overScroller.computeScrollOffset();
     		}
     	}
-    	
-    	public int getCurrX() {
+
+        /**
+         * Gets curr x.
+         *
+         * @return the curr x
+         */
+        public int getCurrX() {
     		if (isPreGingerbread) {
     			return scroller.getCurrX();
     		} else {
     			return overScroller.getCurrX();
     		}
     	}
-    	
-    	public int getCurrY() {
+
+        /**
+         * Gets curr y.
+         *
+         * @return the curr y
+         */
+        public int getCurrY() {
     		if (isPreGingerbread) {
     			return scroller.getCurrY();
     		} else {
@@ -1255,12 +1405,32 @@ public class TouchImageView extends ImageView {
     }
     
     private class ZoomVariables {
-    	public float scale;
-    	public float focusX;
-    	public float focusY;
-    	public ScaleType scaleType;
-    	
-    	public ZoomVariables(float scale, float focusX, float focusY, ScaleType scaleType) {
+        /**
+         * The Scale.
+         */
+        public float scale;
+        /**
+         * The Focus x.
+         */
+        public float focusX;
+        /**
+         * The Focus y.
+         */
+        public float focusY;
+        /**
+         * The Scale type.
+         */
+        public ScaleType scaleType;
+
+        /**
+         * Instantiates a new Zoom variables.
+         *
+         * @param scale     the scale
+         * @param focusX    the focus x
+         * @param focusY    the focus y
+         * @param scaleType the scale type
+         */
+        public ZoomVariables(float scale, float focusX, float focusY, ScaleType scaleType) {
     		this.scale = scale;
     		this.focusX = focusX;
     		this.focusY = focusY;

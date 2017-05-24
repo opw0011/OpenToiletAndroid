@@ -36,10 +36,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Review;
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Review;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 
 
+/**
+ * The type Toilet detail activity.
+ */
 public class ToiletDetailActivity extends AppCompatActivity {
     private static final String TAG = "ToiletDetailActivity";
 
@@ -56,8 +59,14 @@ public class ToiletDetailActivity extends AppCompatActivity {
     private static String toiletId;
     private static Toilet mToilet;
 
+    /**
+     * The constant LOGIN.
+     */
     public static final int LOGIN = 0;
 
+    /**
+     * The constant BOOKMARK_FILE.
+     */
     public static final String BOOKMARK_FILE = "BookmarkFile";
 
     @Override
@@ -75,7 +84,7 @@ public class ToiletDetailActivity extends AppCompatActivity {
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
-        // Get the data passed by the intent
+        // Get the models passed by the intent
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.primary_text_light));
@@ -226,6 +235,11 @@ public class ToiletDetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * On click.
+     *
+     * @param v the v
+     */
     public void onClick(View v) {
         if(v.getId() == R.id.btn_view_location) {
             Intent intent = new Intent(this, PathAdvisorActivity.class);
@@ -255,6 +269,9 @@ public class ToiletDetailActivity extends AppCompatActivity {
 //        mRecyclerView.invalidate();
 //    }
 
+    /**
+     * Update fab state.
+     */
     protected void updateFabState() {
         Set<String> bookmarks = bookmarkPreference.getStringSet("bookmarks", new HashSet<>());
         if(bookmarks.contains(toiletId)){

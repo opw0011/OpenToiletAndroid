@@ -20,8 +20,13 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder{
     private final RatingBar mRatingBar;
     private Context context;
     private ImageView imageView;
-    
 
+
+    /**
+     * Instantiates a new Review view holder.
+     *
+     * @param itemView the item view
+     */
     public ReviewViewHolder(View itemView) {
         super(itemView);
         context = itemView.getContext();
@@ -31,16 +36,36 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder{
         imageView = (ImageView) itemView.findViewById(R.id.ivToiletImage);
     }
 
+    /**
+     * Sets title.
+     *
+     * @param title the title
+     */
     public void setTitle(String title) {
         mTitleField.setText(title);
     }
 
+    /**
+     * Sets desc.
+     *
+     * @param desc the desc
+     */
     public void setDesc(String desc) {
         mDescField.setText(desc);
     }
 
+    /**
+     * Sets rating.
+     *
+     * @param rating the rating
+     */
     public void setRating(float rating) {mRatingBar.setRating(rating);}
 
+    /**
+     * Sets image view.
+     *
+     * @param ImageURL the image url
+     */
     public void setImageView (String ImageURL) {
         Picasso.with(context)
             .load(ImageURL).resize(48, 48).into(imageView);

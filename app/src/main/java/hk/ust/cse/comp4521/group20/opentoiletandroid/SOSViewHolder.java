@@ -20,7 +20,6 @@ import java.util.Date;
 /**
  * Created by opw on 12/5/2017.
  */
-
 public class SOSViewHolder extends RecyclerView.ViewHolder {
     private Context context;
     private TextView textViewTitle;
@@ -30,6 +29,11 @@ public class SOSViewHolder extends RecyclerView.ViewHolder {
     private Button buttonSOSResolve;
     private String sosId;
 
+    /**
+     * Instantiates a new Sos view holder.
+     *
+     * @param itemView the item view
+     */
     public SOSViewHolder(View itemView) {
         super(itemView);
         context = itemView.getContext();
@@ -40,23 +44,48 @@ public class SOSViewHolder extends RecyclerView.ViewHolder {
         buttonSOSResolve = (Button) itemView.findViewById(R.id.btn_sos_resolve);
     }
 
+    /**
+     * Set sos id.
+     *
+     * @param sosId the sos id
+     */
     public void setSosId(String sosId){
         this.sosId = sosId;
         Log.d("", sosId);
     }
 
+    /**
+     * Sets text view title.
+     *
+     * @param title the title
+     */
     public void setTextViewTitle(String title) {
         textViewTitle.setText(title);
     }
 
+    /**
+     * Sets text view message.
+     *
+     * @param message the message
+     */
     public void setTextViewMessage(String message) {
             textViewMessage.setText(message);
     }
 
+    /**
+     * Sets text view toilet name.
+     *
+     * @param name the name
+     */
     public void setTextViewToiletName(String name) {
         textViewToiletName.setText(name);
     }
 
+    /**
+     * Sets text view timestamp.
+     *
+     * @param timestamp the timestamp
+     */
     public void setTextViewTimestamp(String timestamp) {
         DateFormat dfOriginal = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         //DateFormat dfNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -72,6 +101,11 @@ public class SOSViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+    /**
+     * Sets button sos resolve.
+     *
+     * @param userId the user id
+     */
     public void setButtonSOSResolve(String userId) {
         FirebaseAuth.getInstance().addAuthStateListener(auth -> {
             if(auth.getCurrentUser() == null || !auth.getCurrentUser().getUid().equals(userId)) {

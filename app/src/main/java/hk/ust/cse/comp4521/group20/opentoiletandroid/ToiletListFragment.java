@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 import xyz.sahildave.widget.SearchViewLayout;
 
 
@@ -35,6 +35,9 @@ import xyz.sahildave.widget.SearchViewLayout;
  */
 public class ToiletListFragment extends Fragment {
 
+    /**
+     * The constant TAG.
+     */
     public static final String TAG = "ToiletListFragment";
 
     private RecyclerView mRecyclerView;
@@ -48,6 +51,9 @@ public class ToiletListFragment extends Fragment {
     private SearchStaticFragment searchStaticFragment;
     private SearchViewLayout searchViewLayout;
 
+    /**
+     * Instantiates a new Toilet list fragment.
+     */
     public ToiletListFragment() {
         // Required empty public constructor
         Log.d(TAG, "ToiletListFragment constructor");
@@ -59,7 +65,7 @@ public class ToiletListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_toilet_list, container, false);
-        // get data from Firebase
+        // get models from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items");
         query = mRef;
         mRecyclerView = (RecyclerView) view.findViewById(R.id.lvToilet);
@@ -72,7 +78,7 @@ public class ToiletListFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // display data to the user
+        // display models to the user
         setAdapter(true);
         searchViewLayout = (SearchViewLayout) getActivity().findViewById(R.id.search_view_container);
         if (searchViewLayout.getVisibility() == View.GONE) searchViewLayout.setVisibility(View.VISIBLE);
@@ -112,12 +118,12 @@ public class ToiletListFragment extends Fragment {
 
         getActivity().getFragmentManager().beginTransaction()
                 .add(R.id.drawer_layout, loadingScreen).commit();
-        // data ready event listener
+        // models ready event listener
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && getActivity() != null) {
-                    // remove loading screen when data is ready
+                    // remove loading screen when models is ready
                     getActivity().getFragmentManager().beginTransaction()
                             .remove(loadingScreen).commit();
                 }

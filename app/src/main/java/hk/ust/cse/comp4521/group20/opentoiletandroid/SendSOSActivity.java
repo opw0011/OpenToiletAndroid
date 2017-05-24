@@ -22,15 +22,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.SOS;
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.SOS;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 
+/**
+ * The type Send sos activity.
+ */
 public class SendSOSActivity extends AppCompatActivity {
 
     private AutoCompleteTextView title;
     private EditText message;
+    /**
+     * The Firebase auth.
+     */
     protected FirebaseAuth firebaseAuth;
     private Spinner spinnerLocation;
+    /**
+     * The Location adapter.
+     */
     protected ArrayAdapter<Toilet> locationAdapter;
     private String selectedToiletId;
 
