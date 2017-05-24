@@ -1,5 +1,7 @@
 package hk.ust.cse.comp4521.group20.opentoiletandroid.data;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +48,7 @@ public class Toilet {
     public Toilet() {
     }
 
+    @Exclude
     public List<String> getLiftList() {
         List<String> stringList = new ArrayList<>();
         if (lift != null) stringList.addAll(lift.keySet());
