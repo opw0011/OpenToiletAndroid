@@ -159,4 +159,12 @@ public class Toilet {
     public HashMap<String, Boolean> getLift() {
         return lift;
     }
+
+    public double obtainAverageScore() {
+        return count != 0? ((double) total_score) / count : 0;
+    }
+
+    public double obtainAverageWaitingTime() {
+        return count != 0? ((double) total_waiting_minute) / count : 0;
+    }
 }

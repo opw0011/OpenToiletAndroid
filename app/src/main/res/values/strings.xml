@@ -125,7 +125,7 @@
     <string name="bookmark_added">Successfully bookmarked the toilet.</string>
     <string name="bookmark_removed">Successfully removed the toilet.</string>
     <string name="main_popular_toilets">Most Popular Toilets</string>
-    <string name="main_welcome_message">You can check the review of the toilets in HKUST and feel free to explore our app! Have fun and wish a pleasant toilet experience!</string>
+    <string name="main_welcome_message">You can check the review of the toilets in HKUST and feel free to explore our app! Have fun and wish you a pleasant toilet experience!</string>
     <string name="main_welcome_heading">Welcome to OpenToilet!</string>
 
 </resources>
