@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,8 +41,10 @@ public class SOSListFragment extends Fragment {
 
     private static final String TAG = "SOSListFragment";
     private RecyclerView mRecyclerView;
+    private CardView mEmptyCardView;
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView.Adapter mAdapter;
+
 
     public SOSListFragment() {
         // Required empty public constructor
@@ -55,6 +58,9 @@ public class SOSListFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_SOSList);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
+        // empty view
+        mEmptyCardView = (CardView) view.findViewById(R.id.empty_view_SOSList);
 
         // get data from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("sos_items");
@@ -102,7 +108,34 @@ public class SOSListFragment extends Fragment {
                 }
             }
         };
+
+
         mRecyclerView.setAdapter(mAdapter);
+        RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                this.setView();
+
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                this.setView();
+            }
+
+            private void setView() {
+                if(mAdapter.getItemCount() != 0) {
+                    mEmptyCardView.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    mEmptyCardView.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+            }
+        };
+        mAdapter.registerAdapterDataObserver(observer);
 
         // Floating button
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_sos);
