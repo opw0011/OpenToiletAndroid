@@ -130,12 +130,13 @@ public class BookmarkListFragment extends Fragment {
         bookmarkPreference = getActivity().getSharedPreferences(BOOKMARK_FILE,0);
         Set bookmarks = bookmarkPreference.getStringSet("bookmarks", new HashSet<>());
 
-        toiletMap.forEach((String id, ToiletViewHolder vh) -> {
-            if(bookmarks.contains(id)){
-                vh.show();
+        for (String id : toiletMap.keySet()) {
+            ToiletViewHolder toiletViewHolder = toiletMap.get(id);
+            if (bookmarks.contains(id)) {
+                toiletViewHolder.show();
             } else {
-                vh.hide();
+                toiletViewHolder.hide();
             }
-        });
+        }
     }
 }
