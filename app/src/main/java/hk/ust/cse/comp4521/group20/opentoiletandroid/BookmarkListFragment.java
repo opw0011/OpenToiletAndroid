@@ -103,7 +103,7 @@ public class BookmarkListFragment extends Fragment {
             protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {
                 // create list items
                 toiletViewHolder.setName(toilet.getName());
-                String liftString = toilet.getLift().toString();
+                String liftString = toilet.getLiftList().toString();
                 toiletViewHolder.setToilet(toilet);
                 toiletViewHolder.setToiletId(getRef(position).getKey());
                 toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (double) toilet.getTotal_score() / toilet.getCount()));

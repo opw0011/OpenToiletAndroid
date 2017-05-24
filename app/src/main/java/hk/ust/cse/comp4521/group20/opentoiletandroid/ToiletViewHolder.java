@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
@@ -45,7 +44,7 @@ public class ToiletViewHolder extends RecyclerView.ViewHolder implements View.On
 //        intent.putExtra("ToiletTotalScore", toilet.getTotal_score());
 //        intent.putExtra("ToiletReviewCount", toilet.getCount());
 //        intent.putExtra("ToiletFloor", toilet.getFloor());
-//        intent.putExtra("ToiletLift", toilet.getLift().toString());
+//        intent.putExtra("ToiletLift", toilet.getLiftList().toString());
         intent.putExtra("ToiletId", toiletId);
         context.startActivity(intent);
     }

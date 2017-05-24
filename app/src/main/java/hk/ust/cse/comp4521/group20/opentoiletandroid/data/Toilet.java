@@ -3,7 +3,6 @@ package hk.ust.cse.comp4521.group20.opentoiletandroid.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.StringJoiner;
 
 /**
  * Created by opw on 30/4/2017.
@@ -47,9 +46,9 @@ public class Toilet {
     public Toilet() {
     }
 
-    public List<String> getLift() {
+    public List<String> getLiftList() {
         List<String> stringList = new ArrayList<>();
-        stringList.addAll(lift.keySet());
+        if (lift != null) stringList.addAll(lift.keySet());
         return stringList;
     }
 
@@ -148,5 +147,13 @@ public class Toilet {
 
     public void setPa_pos_y(int pa_pos_y) {
         this.pa_pos_y = pa_pos_y;
+    }
+
+    public void setLift(HashMap<String, Boolean> lift) {
+        this.lift = lift;
+    }
+
+    public HashMap<String, Boolean> getLift() {
+        return lift;
     }
 }

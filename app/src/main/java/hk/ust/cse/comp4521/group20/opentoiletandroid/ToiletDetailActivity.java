@@ -88,7 +88,7 @@ public class ToiletDetailActivity extends AppCompatActivity {
                     mToilet = dataSnapshot.getValue(Toilet.class);
                     collapsingToolbarLayout.setTitle(mToilet.getName());
                     ((TextView) findViewById(R.id.tv_floor)).setText(String.format("%s", mToilet.getFloor()));
-                    ((TextView) findViewById(R.id.tv_lift)).setText(String.format("%s", TextUtils.join("," , mToilet.getLift())));
+                    ((TextView) findViewById(R.id.tv_lift)).setText(String.format("%s", TextUtils.join("," , mToilet.getLiftList())));
                     ((TextView) findViewById(R.id.tv_avg_score)).setText(String.format("%.1f", (double) mToilet.getTotal_score() / mToilet.getCount()));
                     ((TextView) findViewById(R.id.tv_waiting_time)).setText(String.format("%.1f minutes", (double) mToilet.getTotal_waiting_minute() / mToilet.getCount()));
                     ((TextView) findViewById(R.id.tv_count)).setText(String.format("%d", mToilet.getCount()));

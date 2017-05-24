@@ -143,7 +143,7 @@ public class ToiletListFragment extends Fragment {
             protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {
                 // create list items
                 toiletViewHolder.setName(toilet.getName());
-                String liftString = toilet.getLift().toString();
+                String liftString = toilet.getLiftList().toString();
                 toiletViewHolder.setToilet(toilet);
                 toiletViewHolder.setToiletId(getRef(position).getKey());
                 toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (double) toilet.getTotal_score() / toilet.getCount()));
@@ -182,7 +182,7 @@ public class ToiletListFragment extends Fragment {
                     switch (queryDoneOnFB) {
                         case 0:
                             if (searchStaticFragment.getLiftNumber() != -1) {
-                                if (!toilet.getLift().contains(searchStaticFragment.getLiftNumber() + "")) {
+                                if (!toilet.getLiftList().contains(searchStaticFragment.getLiftNumber() + "")) {
                                     toiletViewHolder.hide();
                                     return;
                                 }
@@ -246,7 +246,7 @@ public class ToiletListFragment extends Fragment {
         strBdr.append(toilet.getGender() == Toilet.Gender.M ? getPrefixString("male") :
                 toilet.getGender() == Toilet.Gender.F ? getPrefixString("female") :
                         getPrefixString("male") + getPrefixString("female"));
-        for (String k : toilet.getLift())
+        for (String k : toilet.getLiftList())
             strBdr.append(k).append(" ");
         strBdr.append(toilet.isHas_changing_room() ? getPrefixString("changing") : "");
         strBdr.append(toilet.isHas_shower() ? getPrefixString("showering") : "");
