@@ -89,8 +89,8 @@ public class ToiletDetailActivity extends AppCompatActivity {
                     collapsingToolbarLayout.setTitle(mToilet.getName());
                     ((TextView) findViewById(R.id.tv_floor)).setText(String.format("%s", mToilet.getFloor()));
                     ((TextView) findViewById(R.id.tv_lift)).setText(String.format("%s", TextUtils.join("," , mToilet.getLiftList())));
-                    ((TextView) findViewById(R.id.tv_avg_score)).setText(String.format("%.1f", (double) mToilet.getTotal_score() / mToilet.getCount()));
-                    ((TextView) findViewById(R.id.tv_waiting_time)).setText(String.format("%.1f minutes", (double) mToilet.getTotal_waiting_minute() / mToilet.getCount()));
+                    ((TextView) findViewById(R.id.tv_avg_score)).setText(String.format("%.1f", mToilet.obtainAverageScore()));
+                    ((TextView) findViewById(R.id.tv_waiting_time)).setText(String.format("%.1f minutes", mToilet.obtainAverageWaitingTime()));
                     ((TextView) findViewById(R.id.tv_count)).setText(String.format("%d", mToilet.getCount()));
                     ((TextView) findViewById(R.id.tv_has_accessible_toilet)).setText(mToilet.isHas_accessible_toilet() ? "✔" : "❌");
                     ((TextView) findViewById(R.id.tv_has_changing_room)).setText(mToilet.isHas_changing_room()? "✔" : "❌");
