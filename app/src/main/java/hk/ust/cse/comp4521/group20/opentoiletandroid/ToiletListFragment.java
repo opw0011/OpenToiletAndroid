@@ -85,7 +85,7 @@ public class ToiletListFragment extends Fragment {
                 searchViewLayout.collapse();
                 searchString = searchKeyword;
                 if (searchStaticFragment.getFloor().length() != 0) {
-                    query = mRef.orderByChild("floor").equalTo(searchStaticFragment.getFloor());
+                    query = mRef.orderByChild("floor").equalTo(searchStaticFragment.getFloor().toUpperCase());
                     queryDoneOnFB = 0;
                 } else if (searchStaticFragment.getLiftNumber() != -1) {
                     query = mRef.orderByChild("lift/" + searchStaticFragment.getLiftNumber()).equalTo(true);
