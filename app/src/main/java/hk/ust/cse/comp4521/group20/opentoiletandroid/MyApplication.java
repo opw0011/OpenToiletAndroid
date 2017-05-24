@@ -8,7 +8,6 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * Created by opw on 6/5/2017.
  */
-
 public class MyApplication extends Application {
     @Override
     public void onCreate() {

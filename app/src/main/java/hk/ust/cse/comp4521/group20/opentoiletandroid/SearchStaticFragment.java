@@ -14,7 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 
 
 /**
@@ -31,6 +31,9 @@ public class SearchStaticFragment extends Fragment {
 
     private Toilet.Gender gender;
 
+    /**
+     * Instantiates a new Search static fragment.
+     */
     public SearchStaticFragment() {
     }
 
@@ -73,28 +76,58 @@ public class SearchStaticFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Gets floor.
+     *
+     * @return the floor
+     */
     public String getFloor() {
         return floorText.getText().toString();
     }
 
+    /**
+     * Gets lift number.
+     *
+     * @return the lift number
+     */
     public int getLiftNumber() {
         String string = liftText.getText().toString();
         if (string.length() == 0) return -1;
         return Integer.parseInt(string);
     }
 
+    /**
+     * Gets gender.
+     *
+     * @return the gender
+     */
     public Toilet.Gender getGender() {
         return gender;
     }
 
+    /**
+     * Need accessible boolean.
+     *
+     * @return the boolean
+     */
     public boolean needAccessible() {
         return accessibleCheckBox.isChecked();
     }
 
+    /**
+     * Need changing boolean.
+     *
+     * @return the boolean
+     */
     public boolean needChanging() {
         return changingCheckBox.isChecked();
     }
 
+    /**
+     * Need shower boolean.
+     *
+     * @return the boolean
+     */
     public boolean needShower() {
         return showerCheckBox.isChecked();
     }

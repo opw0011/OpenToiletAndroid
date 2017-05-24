@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+/**
+ * The type Loading screen.
+ */
 public class LoadingScreen extends Fragment {
     @Nullable
     @Override

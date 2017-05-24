@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 
 
 /**
@@ -32,6 +32,9 @@ import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
  */
 public class BookmarkListFragment extends Fragment {
 
+    /**
+     * The constant TAG.
+     */
     public static final String TAG = "BookmarkListFragment";
 
     private RecyclerView mRecyclerView;
@@ -42,6 +45,9 @@ public class BookmarkListFragment extends Fragment {
     private SharedPreferences bookmarkPreference;
     private static final String BOOKMARK_FILE = "BookmarkFile";
 
+    /**
+     * Instantiates a new Bookmark list fragment.
+     */
     public BookmarkListFragment() {
         // Required empty public constructor
         Log.d(TAG, "ToiletListFragment constructor");
@@ -69,15 +75,15 @@ public class BookmarkListFragment extends Fragment {
         getActivity().getFragmentManager().beginTransaction()
                 .add(R.id.drawer_layout, loadingScreen).commit();
 
-        // get data from Firebase
+        // get models from Firebase
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items");
 
-        // data ready event listener
+        // models ready event listener
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // remove loading screen when data is ready
+                    // remove loading screen when models is ready
                     getActivity().getFragmentManager().beginTransaction()
                             .remove(loadingScreen).commit();
                 }
@@ -97,7 +103,7 @@ public class BookmarkListFragment extends Fragment {
         Set bookmarks = bookmarkPreference.getStringSet("bookmarks", new HashSet<>());
 
 
-//         display data to the user
+//         display models to the user
         mAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, mRef) {
             @Override
             protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {

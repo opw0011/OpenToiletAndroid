@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import hk.ust.cse.comp4521.group20.opentoiletandroid.data.Toilet;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 
 
 /**
@@ -27,6 +27,9 @@ public class MainFragment extends Fragment {
 
     private static final int MAX_TOILETS_ON_LIST = 10;
 
+    /**
+     * Instantiates a new Main fragment.
+     */
     public MainFragment() {
         // Required empty public constructor
     }
@@ -55,7 +58,7 @@ public class MainFragment extends Fragment {
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("toilet_items");
         Query popularQuery = mRef.orderByChild("count").limitToLast(MAX_TOILETS_ON_LIST);
 
-        // display data to the user
+        // display models to the user
         mPopularToiletsAdapter = new FirebaseRecyclerAdapter<Toilet, ToiletViewHolder>(Toilet.class, R.layout.toilet_list_item, ToiletViewHolder.class, popularQuery) {
             @Override
             protected void populateViewHolder(ToiletViewHolder toiletViewHolder, Toilet toilet, int position) {
