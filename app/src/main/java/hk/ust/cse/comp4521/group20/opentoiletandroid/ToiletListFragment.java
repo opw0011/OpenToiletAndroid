@@ -146,7 +146,7 @@ public class ToiletListFragment extends Fragment {
                 String liftString = toilet.getLiftList().toString();
                 toiletViewHolder.setToilet(toilet);
                 toiletViewHolder.setToiletId(getRef(position).getKey());
-                toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (double) toilet.getTotal_score() / toilet.getCount()));
+                toiletViewHolder.setText(String.format("lift: %s rating: %.1f", liftString.substring(1, liftString.length() - 1), (toilet.getCount() != 0)?(double) toilet.getTotal_score() / toilet.getCount():0));
                 if (isCreateView) {
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     Boolean accessiblePref = sharedPref.getBoolean("accessible_switch", false);
