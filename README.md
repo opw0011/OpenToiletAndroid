@@ -8,9 +8,9 @@
 - [x] ~~Toilet list fragment~~
 - [x] ~~Toilet detail fragment~~
 - [x] ~~Login and signup activity~~
-- [ ] Toilet Review input validation, improve wating time seek bar
-- [ ] Toilet list search fragment (lift, floor, gender and otherr facilities)
-- [ ] Main page showing top rated toilet or notice
+- [x] ~~Toilet Review improve wating time seek bar~~
+- [x] ~~Toilet list search fragment (lift, floor, gender and otherr facilities)~~
+- [x] ~~Main page showing top rated toilet or notice~~
 
 
 **Features**
@@ -18,11 +18,11 @@
 - [x] ~~Give toilet rating~~
 - [x] ~~Write toilet review~~
 - [x] ~~Save app preference~~
-- [ ] SOS Request + Response 
-- [ ] Search using Firebase Query instead of local search
+- [x] ~~SOS Request + Response ~~
+- [x] ~~Search using Firebase Query instead of local search~~
 
 **Web Admin Platform**
-- [ ] List toilet data
-- [ ] Edit toilet data
-- [ ] Edit toilet review
+- [x] ~~List toilet data~~
+- [x] ~~Edit toilet data~~
+- [ ] ~~Edit toilet review~~
 - [ ] Admin login
