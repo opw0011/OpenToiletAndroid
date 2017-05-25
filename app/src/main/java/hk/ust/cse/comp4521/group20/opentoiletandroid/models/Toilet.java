@@ -1,3 +1,9 @@
+/*
+   #    COMP 4521
+   #    CHAN HON SUM    20192524    hschanak@connect.ust.hk
+   #    O PUI WAI       20198827    pwo@connect.ust.hk
+   #    YU WANG LEUNG   20202032    wlyuaa@connect.ust.hk
+ */
 package hk.ust.cse.comp4521.group20.opentoiletandroid.models;
 
 import com.google.firebase.database.Exclude;
@@ -11,17 +17,17 @@ import java.util.List;
  */
 public class Toilet {
     /**
-     * The enum Gender.
+     * The Gender enumeration.
      */
     public enum Gender {
         /**
-         * M gender.
+         * Male.
          */
         M, /**
-         * F gender.
+         * Female.
          */
         F, /**
-         * Both gender.
+         * Unisex.
          */
         Both
     }
