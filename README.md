@@ -18,7 +18,7 @@
 - [x] ~~Give toilet rating~~
 - [x] ~~Write toilet review~~
 - [x] ~~Save app preference~~
-- [x] ~~SOS Request + Response ~~
+- [x] ~~SOS Request + Response~~
 - [x] ~~Search using Firebase Query instead of local search~~
 
 **Web Admin Platform**
