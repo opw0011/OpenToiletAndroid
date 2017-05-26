@@ -380,6 +380,6 @@ public class MainActivity extends AppCompatActivity
                                 new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
                                 new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
                         .build(),
-                0);
+                LOGIN);
     }
 }

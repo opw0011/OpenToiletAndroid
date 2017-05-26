@@ -28,7 +28,7 @@
         android:background="@android:color/background_dark"
         android:gravity="center">
 
-        <com.ortiz.touch.TouchImageView
+        <hk.ust.cse.comp4521.group20.opentoiletandroid.toiletDetail.TouchImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
