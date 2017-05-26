@@ -4,7 +4,7 @@
     android:id="@+id/activity_path_advisor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.PathAdvisorActivity">
+    tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.pathAdvisor.PathAdvisorActivity">
 
     <WebView
         android:id="@+id/mWebView"

@@ -18,7 +18,7 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".splashScreen.SplashScreenActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,27 +27,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".setting.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".ToiletDetailActivity"
+            android:name=".toiletDetail.ToiletDetailActivity"
             android:label="@string/title_activity_toilet_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".PathAdvisorActivity"
-            android:parentActivityName=".ToiletDetailActivity" />
+            android:name=".pathAdvisor.PathAdvisorActivity"
+            android:parentActivityName=".toiletDetail.ToiletDetailActivity" />
         <activity
-            android:name=".WriteToiletReviewActivity"
+            android:name=".toiletReview.WriteToiletReviewActivity"
             android:label="@string/title_activity_write_toilet_review"
-            android:parentActivityName=".ToiletDetailActivity"
+            android:parentActivityName=".toiletDetail.ToiletDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ImageActivity"
-            android:parentActivityName=".ToiletDetailActivity"
+            android:name=".toiletDetail.ImageActivity"
+            android:parentActivityName=".toiletDetail.ToiletDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SendSOSActivity"
+            android:name=".sos.SendSOSActivity"
             android:label="@string/title_activity_send_sos"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

@@ -41,6 +41,12 @@ import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
 import java.util.Arrays;
 
+import hk.ust.cse.comp4521.group20.opentoiletandroid.bookmark.BookmarkListFragment;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.setting.SettingsActivity;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.sos.SOSListFragment;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.sos.SendSOSActivity;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.toiletList.ToiletListFragment;
+
 /**
  * The type Main activity.
  */
@@ -364,7 +370,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Start login activity.
      */
-    void startLoginActivity() {
+    public void startLoginActivity() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()

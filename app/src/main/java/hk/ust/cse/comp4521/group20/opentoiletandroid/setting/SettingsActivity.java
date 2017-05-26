@@ -4,7 +4,7 @@
    #    O PUI WAI       20198827    pwo@connect.ust.hk
    #    YU WANG LEUNG   20202032    wlyuaa@connect.ust.hk
  */
-package hk.ust.cse.comp4521.group20.opentoiletandroid;
+package hk.ust.cse.comp4521.group20.opentoiletandroid.setting;
 
 
 import android.annotation.TargetApi;
@@ -26,6 +26,9 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import hk.ust.cse.comp4521.group20.opentoiletandroid.R;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.setting.AppCompatPreferenceActivity;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

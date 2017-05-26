@@ -4,7 +4,7 @@
    #    O PUI WAI       20198827    pwo@connect.ust.hk
    #    YU WANG LEUNG   20202032    wlyuaa@connect.ust.hk
  */
-package hk.ust.cse.comp4521.group20.opentoiletandroid;
+package hk.ust.cse.comp4521.group20.opentoiletandroid.sos;
 
 
 import android.content.Intent;
@@ -37,7 +37,11 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+import hk.ust.cse.comp4521.group20.opentoiletandroid.MainActivity;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.R;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.models.SOS;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.sos.SOSViewHolder;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.sos.SendSOSActivity;
 
 
 /**

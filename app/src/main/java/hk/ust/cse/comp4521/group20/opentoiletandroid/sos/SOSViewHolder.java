@@ -4,7 +4,7 @@
    #    O PUI WAI       20198827    pwo@connect.ust.hk
    #    YU WANG LEUNG   20202032    wlyuaa@connect.ust.hk
  */
-package hk.ust.cse.comp4521.group20.opentoiletandroid;
+package hk.ust.cse.comp4521.group20.opentoiletandroid.sos;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +22,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import hk.ust.cse.comp4521.group20.opentoiletandroid.R;
 
 /**
  * Created by opw on 12/5/2017.

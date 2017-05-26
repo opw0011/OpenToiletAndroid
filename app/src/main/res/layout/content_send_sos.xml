@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/spacing_medium"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.SendSOSActivity"
+    tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.sos.SendSOSActivity"
     tools:showIn="@layout/activity_send_sos">
 
     <android.support.design.widget.TextInputLayout

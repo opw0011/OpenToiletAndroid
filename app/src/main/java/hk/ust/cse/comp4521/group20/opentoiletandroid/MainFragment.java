@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.toiletList.ToiletViewHolder;
 
 
 /**

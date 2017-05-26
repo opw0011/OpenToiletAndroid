@@ -4,7 +4,7 @@
    #    O PUI WAI       20198827    pwo@connect.ust.hk
    #    YU WANG LEUNG   20202032    wlyuaa@connect.ust.hk
  */
-package hk.ust.cse.comp4521.group20.opentoiletandroid;
+package hk.ust.cse.comp4521.group20.opentoiletandroid.toiletReview;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -40,6 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import hk.ust.cse.comp4521.group20.opentoiletandroid.R;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.toiletDetail.ToiletDetailActivity;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Review;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 

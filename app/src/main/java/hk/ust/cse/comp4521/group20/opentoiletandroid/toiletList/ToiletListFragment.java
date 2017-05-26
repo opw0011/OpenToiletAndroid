@@ -4,7 +4,7 @@
    #    O PUI WAI       20198827    pwo@connect.ust.hk
    #    YU WANG LEUNG   20202032    wlyuaa@connect.ust.hk
  */
-package hk.ust.cse.comp4521.group20.opentoiletandroid;
+package hk.ust.cse.comp4521.group20.opentoiletandroid.toiletList;
 
 
 import android.content.SharedPreferences;
@@ -32,6 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import hk.ust.cse.comp4521.group20.opentoiletandroid.LoadingScreen;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.MainActivity;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.R;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 import xyz.sahildave.widget.SearchViewLayout;
 

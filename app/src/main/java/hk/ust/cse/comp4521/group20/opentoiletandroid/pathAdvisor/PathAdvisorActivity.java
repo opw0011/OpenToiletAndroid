@@ -4,7 +4,7 @@
    #    O PUI WAI       20198827    pwo@connect.ust.hk
    #    YU WANG LEUNG   20202032    wlyuaa@connect.ust.hk
  */
-package hk.ust.cse.comp4521.group20.opentoiletandroid;
+package hk.ust.cse.comp4521.group20.opentoiletandroid.pathAdvisor;
 
 import android.content.Intent;
 import android.os.Build;
@@ -15,6 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import hk.ust.cse.comp4521.group20.opentoiletandroid.R;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.toiletDetail.ToiletDetailActivity;
 
 /**
  * The type Path advisor activity.

@@ -4,7 +4,7 @@
    #    O PUI WAI       20198827    pwo@connect.ust.hk
    #    YU WANG LEUNG   20202032    wlyuaa@connect.ust.hk
  */
-package hk.ust.cse.comp4521.group20.opentoiletandroid;
+package hk.ust.cse.comp4521.group20.opentoiletandroid.sos;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import hk.ust.cse.comp4521.group20.opentoiletandroid.R;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.models.SOS;
 import hk.ust.cse.comp4521.group20.opentoiletandroid.models.Toilet;
 

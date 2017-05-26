@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.ToiletDetailActivity"
+    tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.toiletDetail.ToiletDetailActivity"
     tools:showIn="@layout/activity_toilet_detail">
 
 </RelativeLayout>

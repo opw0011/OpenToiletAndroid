@@ -4,7 +4,7 @@
    #    O PUI WAI       20198827    pwo@connect.ust.hk
    #    YU WANG LEUNG   20202032    wlyuaa@connect.ust.hk
  */
-package hk.ust.cse.comp4521.group20.opentoiletandroid;
+package hk.ust.cse.comp4521.group20.opentoiletandroid.splashScreen;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -15,6 +15,9 @@ import android.view.View;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import hk.ust.cse.comp4521.group20.opentoiletandroid.MainActivity;
+import hk.ust.cse.comp4521.group20.opentoiletandroid.R;
 
 /**
  * The type Splash screen activity.

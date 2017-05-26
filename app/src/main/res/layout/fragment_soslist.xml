@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.SOSListFragment">
+    tools:context="hk.ust.cse.comp4521.group20.opentoiletandroid.sos.SOSListFragment">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_sos"
