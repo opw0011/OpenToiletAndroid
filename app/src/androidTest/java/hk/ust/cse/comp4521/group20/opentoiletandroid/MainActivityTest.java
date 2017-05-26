@@ -29,13 +29,13 @@ public class MainActivityTest {
 
     @Test
     public void navigationDrawerOpenTest() throws InterruptedException {
-        //onView(withId(R.id.update)).perform(click());
         Thread.sleep(2000);
 
         // Open Drawer to click on navigation.
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT))) // Left Drawer should be closed.
-                .perform(DrawerActions.open()); // Open Drawer
+                .perform(DrawerActions.open()) // Open Drawer
+                .check(matches(isDisplayed())); // The app drawer should be displayed.
     }
 
     @Test
